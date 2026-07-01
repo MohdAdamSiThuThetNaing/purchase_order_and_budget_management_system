@@ -1,0 +1,172 @@
+/* ============================
+   Page
+============================ */
+
+.project-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 40px 50px;
+  background: #f4f7fc;
+  box-sizing: border-box;
+}
+
+/* ============================
+   Header
+============================ */
+
+.project-header {
+  margin-bottom: 30px;
+}
+
+.project-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.project-header p {
+  margin-top: 8px;
+  color: #6b7280;
+  font-size: 15px;
+}
+
+/* ============================
+   Card
+============================ */
+
+.project-card {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 24px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+/* ============================
+   Toolbar
+============================ */
+
+.project-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.project-input,
+.project-textarea {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 15px;
+  transition: 0.2s;
+  box-sizing: border-box;
+}
+
+.project-input {
+  height: 48px;
+}
+
+.project-textarea {
+  min-height: 120px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.project-input:focus,
+.project-textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+.project-button {
+  align-self: flex-start;
+  height: 48px;
+  padding: 0 26px;
+  border: none;
+  border-radius: 10px;
+  background: #2563eb;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.project-button:hover {
+  background: #1d4ed8;
+}
+
+/* ============================
+   Table
+============================ */
+
+.project-card table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.project-card thead {
+  background: #f9fafb;
+}
+
+.project-card th {
+  padding: 16px;
+  text-align: left;
+  font-size: 14px;
+  color: #374151;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.project-card td {
+  padding: 16px;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.project-card tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* Delete button */
+
+.project-card button {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.project-card button:hover {
+  background: #dc2626;
+}
+
+/* ============================
+   Responsive
+============================ */
+
+@media (max-width: 768px) {
+  .project-page {
+    padding: 20px;
+  }
+
+  .project-toolbar {
+    width: 100%;
+  }
+
+  .project-input,
+  .project-textarea,
+  .project-button {
+    width: 100%;
+  }
+
+  .project-button {
+    align-self: stretch;
+  }
+}

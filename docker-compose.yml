@@ -1,0 +1,149 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: po-postgres
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    ports:
+      - "55432:${POSTGRES_PORT}"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+    networks:
+      - po-network
+
+  flyway:
+    image: flyway/flyway:10
+    container_name: po-flyway
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    env_file:
+      - .env
+
+    command:
+      - migrate
+      - -url=jdbc:postgresql://postgres:${POSTGRES_PORT}/${POSTGRES_DB}
+      - -user=${POSTGRES_USER}
+      - -password=${POSTGRES_PASSWORD}
+      - -sqlMigrationPrefix=
+      - -sqlMigrationSeparator=_
+
+    # NOTE: ./database/migrations now also contains 9_seed_sample_data.sql
+    # (moved from ./database/seed), so seed data runs automatically here too.
+    volumes:
+      - ./database/migrations:/flyway/sql
+
+    networks:
+      - po-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    container_name: po-backend
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      flyway:
+        condition: service_completed_successfully
+
+    env_file:
+      - .env
+
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:${POSTGRES_PORT}/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+
+    ports:
+      - "${SPRING_PORT}:8081"
+
+    working_dir: /app
+
+    volumes:
+      - ./backend:/app
+      - gradle_cache:/home/gradle/.gradle
+
+    command: ./gradlew bootRun --no-daemon
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'wget -qO- http://localhost:8081/actuator/health | grep -q ''"status":"UP"'' || exit 1',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 60s
+
+    stdin_open: true
+    tty: true
+
+    restart: unless-stopped
+
+    networks:
+      - po-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    container_name: po-frontend
+
+    depends_on:
+      backend:
+        condition: service_healthy
+
+    env_file:
+      - .env
+
+    working_dir: /app
+
+    ports:
+      - "${FRONTEND_PORT}:5173"
+
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+    command: npm run dev -- --host 0.0.0.0
+
+    stdin_open: true
+    tty: true
+
+    restart: unless-stopped
+
+    networks:
+      - po-network
+
+networks:
+  po-network:
+
+volumes:
+  postgres_data:
+  gradle_cache:

@@ -1,0 +1,121 @@
+.po-details-page {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Header */
+.po-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: #ffffff;
+  padding: 16px 20px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+.po-header h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.po-header p {
+  margin: 4px 0 0;
+  color: #6b7280;
+}
+
+/* Back button */
+.po-header button {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.po-header button:hover {
+  background: #2563eb;
+}
+
+/* Status badge */
+.po-status {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 12px;
+  width: fit-content;
+}
+
+/* Status colors */
+.po-status.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.po-status.approved {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.po-status.rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.po-status.completed {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+/* Cards */
+.po-card {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+.po-card h3 {
+  margin-bottom: 12px;
+}
+
+/* Table */
+.po-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.po-table th,
+.po-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.po-table th {
+  background: #f9fafb;
+}
+
+/* Approval list */
+.po-approval-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.po-approval-list li {
+  padding: 10px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Error */
+.error {
+  color: #dc2626;
+  font-weight: 500;
+}

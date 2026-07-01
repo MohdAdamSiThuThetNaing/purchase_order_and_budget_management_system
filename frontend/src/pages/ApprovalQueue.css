@@ -1,0 +1,89 @@
+.approval-page {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Header */
+.approval-header {
+  background: #ffffff;
+  padding: 16px 20px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+.approval-header h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.approval-header p {
+  margin: 4px 0 0;
+  color: #6b7280;
+}
+
+/* Card */
+.approval-card {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+/* Table container */
+.table-container {
+  overflow-x: auto;
+}
+
+/* Table */
+.approval-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+.approval-table th,
+.approval-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.approval-table th {
+  background: #f9fafb;
+  font-weight: 600;
+}
+
+/* Buttons */
+.approve-btn {
+  background: #22c55e;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 6px;
+}
+
+.approve-btn:hover {
+  background: #16a34a;
+}
+
+.reject-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.reject-btn:hover {
+  background: #dc2626;
+}
+
+/* Empty state */
+.approval-page p {
+  color: #6b7280;
+}

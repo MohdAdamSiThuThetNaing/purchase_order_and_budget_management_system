@@ -1,0 +1,38 @@
+# macOS
+
+.DS_Store
+
+# IntelliJ IDEA
+
+.idea/
+*.iml
+
+# VS Code
+
+.vscode/
+
+# Backend
+
+backend/.gradle/
+backend/build/
+
+# Frontend
+
+frontend/node_modules/
+frontend/dist/
+
+# Environment
+
+.env
+
+# Logs
+
+*.log
+
+# Docker
+
+docker-data/
+
+# Gradle
+
+.gradle/

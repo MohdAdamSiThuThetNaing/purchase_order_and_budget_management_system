@@ -1,0 +1,198 @@
+.dashboard {
+  min-height: 100vh;
+  padding: 40px;
+  background: #f5f7fb;
+}
+
+/* ===========================
+   Header
+=========================== */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 36px;
+}
+
+.title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.subtitle {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+.organization {
+  color: #4b5563;
+  font-size: 0.95rem;
+}
+
+/* ===========================
+   Dashboard Cards
+=========================== */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  transition: all 0.25s ease;
+  border: 1px solid transparent;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: #2563eb;
+  box-shadow: 0 18px 40px rgba(37, 99, 235, 0.18);
+}
+
+.card h3 {
+  margin: 16px 0 10px;
+  font-size: 1.2rem;
+  color: #1f2937;
+}
+
+.card p {
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.cardIcon {
+  font-size: 3rem;
+}
+
+/* ===========================
+   Main Content
+=========================== */
+
+.content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+.panel {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.panelTitle {
+  margin: 0 0 24px;
+  color: #1f2937;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* ===========================
+   Profile
+=========================== */
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profile p {
+  margin: 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #edf2f7;
+  color: #374151;
+}
+
+.profile p:last-child {
+  border-bottom: none;
+}
+
+/* ===========================
+   Module List
+=========================== */
+
+.moduleList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.moduleList li {
+  padding: 14px 0;
+  border-bottom: 1px solid #edf2f7;
+  font-size: 1rem;
+  color: #374151;
+}
+
+.moduleList li:last-child {
+  border-bottom: none;
+}
+
+/* ===========================
+   Empty State
+=========================== */
+
+.emptyState {
+  min-height: 260px;
+  border: 2px dashed #d1d5db;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #9ca3af;
+  font-size: 1rem;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media (max-width: 960px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard {
+    padding: 20px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .title {
+    font-size: 1.6rem;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .panel {
+    padding: 20px;
+  }
+}
