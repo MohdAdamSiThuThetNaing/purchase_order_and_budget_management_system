@@ -42,7 +42,11 @@ class SecurityConfig {
 
     private fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration().apply {
-            allowedOriginPatterns = listOf("http://localhost:*")
+            allowedOriginPatterns = listOf(
+                "http://localhost:*",
+                "http://127.0.0.1:*",
+                "http://0.0.0.0:*"
+            )
             allowedMethods = listOf("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
             allowedHeaders = listOf("*")
             allowCredentials = true

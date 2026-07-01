@@ -2,9 +2,12 @@ import axios from "axios";
 import type { AuthResponse, LoginRequest } from "../types/auth";
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080/api";
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.DEV ? "http://localhost:8080/api" : "");
 
-const authClient = axios.create({ baseURL: API_BASE_URL });
+const authClient = axios.create({
+  baseURL: API_BASE_URL,
+});
 
 export const authApi = {
   login: (payload: LoginRequest) =>

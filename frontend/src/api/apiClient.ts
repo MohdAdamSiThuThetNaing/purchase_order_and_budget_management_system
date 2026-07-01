@@ -3,7 +3,14 @@ import { authApi } from "./authApi";
 import { refreshTokenStorage } from "../services/tokenStorage";
 
 export const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080/api";
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.DEV ? "http://localhost:8080/api" : "");
+
+if (!API_BASE_URL) {
+  throw new Error(
+    "VITE_API_BASE_URL is not configured. Please set it in your environment variables."
+  );
+}
 
 let accessToken: string | null = null;
 
@@ -33,6 +40,7 @@ apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
+
   return config;
 });
 
@@ -85,11 +93,9 @@ apiClient.interceptors.response.use(
       const refreshed = await authApi.refresh(refreshToken);
 
       setAccessToken(refreshed.accessToken);
-
       refreshTokenStorage.set(refreshed.refreshToken);
 
       onTokenRefreshed?.(refreshed.accessToken);
-
       notifyPendingRequests(refreshed.accessToken);
 
       originalRequest.headers.Authorization = `Bearer ${refreshed.accessToken}`;
@@ -100,6 +106,7 @@ apiClient.interceptors.response.use(
       refreshTokenStorage.clear();
       setAccessToken(null);
       onRefreshFailed?.();
+
       return Promise.reject(err);
     } finally {
       isRefreshing = false;
