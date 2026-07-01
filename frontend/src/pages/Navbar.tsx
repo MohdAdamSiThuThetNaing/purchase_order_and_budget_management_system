@@ -9,7 +9,7 @@ import {
   getUnreadNotificationCount,
   markNotificationAsRead,
 } from "../api/notificationApi";
-
+import { useTheme } from "../contexts/ThemeContext";
 import "../layouts/Navbar.css";
 
 interface Notification {
@@ -23,7 +23,7 @@ interface Notification {
 
 const Navbar = () => {
   const { user } = useAuth();
-
+  const { theme, toggleTheme } = useTheme();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [open, setOpen] = useState(false);
@@ -130,6 +130,9 @@ const Navbar = () => {
       </Link>
 
       <div className="navbar-right">
+        <button className="theme-toggle" onClick={toggleTheme}>
+          {theme === "light" ? "🌙" : "☀️"}
+        </button>
         <div className="notification-wrapper" ref={dropdownRef}>
           <button
             className={`notification-button ${

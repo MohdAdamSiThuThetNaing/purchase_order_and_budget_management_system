@@ -1,3 +1,18 @@
 .main-layout-content {
   padding-top: 72px;
 }
+
+.main-layout {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.main-layout-content {
+  padding-top: 72px; /* Navbar height */
+  min-height: calc(100vh - 72px);
+  background: var(--bg);
+  color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

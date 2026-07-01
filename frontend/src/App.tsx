@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { AuthProvider } from "./contexts/AuthContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
 import MainLayout from "./layouts/MainLayout";
@@ -25,60 +26,62 @@ import PurchaseOrderForm from "./pages/PurchaseOrderForm";
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-
-          <Route
-            element={
-              <ProtectedRoute>
-                <MainLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="/dashboard" element={<DashboardPage />} />
-
-            <Route path="/organizations" element={<Organizations />} />
-
-            <Route path="/projects" element={<Projects />} />
-
-            <Route path="/budgets" element={<Budgets />} />
-
-            <Route path="/purchase-orders" element={<PurchaseOrders />} />
+      <ThemeProvider>
+        <AuthProvider>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
 
             <Route
-              path="/purchase-orders/new"
-              element={<PurchaseOrderForm />}
-            />
+              element={
+                <ProtectedRoute>
+                  <MainLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="/dashboard" element={<DashboardPage />} />
 
-            <Route
-              path="/purchase-orders/:id/edit"
-              element={<PurchaseOrderForm />}
-            />
+              <Route path="/organizations" element={<Organizations />} />
 
-            <Route
-              path="/purchase-orders/:id"
-              element={<PurchaseOrderDetails />}
-            />
+              <Route path="/projects" element={<Projects />} />
 
-            <Route path="/users" element={<Users />} />
+              <Route path="/budgets" element={<Budgets />} />
 
-            <Route path="/budget-categories" element={<BudgetCategories />} />
+              <Route path="/purchase-orders" element={<PurchaseOrders />} />
 
-            <Route path="/budget-lines" element={<BudgetLines />} />
+              <Route
+                path="/purchase-orders/new"
+                element={<PurchaseOrderForm />}
+              />
 
-            <Route path="/budget-report" element={<BudgetReport />} />
+              <Route
+                path="/purchase-orders/:id/edit"
+                element={<PurchaseOrderForm />}
+              />
 
-            <Route path="/approval-queue" element={<ApprovalQueue />} />
+              <Route
+                path="/purchase-orders/:id"
+                element={<PurchaseOrderDetails />}
+              />
 
-            <Route path="/notifications" element={<NotificationCenter />} />
-          </Route>
+              <Route path="/users" element={<Users />} />
 
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/budget-categories" element={<BudgetCategories />} />
 
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
-        </Routes>
-      </AuthProvider>
+              <Route path="/budget-lines" element={<BudgetLines />} />
+
+              <Route path="/budget-report" element={<BudgetReport />} />
+
+              <Route path="/approval-queue" element={<ApprovalQueue />} />
+
+              <Route path="/notifications" element={<NotificationCenter />} />
+            </Route>
+
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          </Routes>
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }
