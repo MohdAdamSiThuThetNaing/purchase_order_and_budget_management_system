@@ -1,15 +1,17 @@
 export interface BudgetReportItem {
-  projectName: string;
-  categoryName: string;
+  category: string;
+  budgetLine: string;
   budget: number;
-  spent: number;
+  committed: number;
+  actual: number;
   remaining: number;
 }
 
 export interface BudgetReport {
   totalBudget: number;
-  totalSpent: number;
-  remaining: number;
+  totalCommitted: number;
+  totalActual: number;
+  totalRemaining: number;
   items: BudgetReportItem[];
 }
 

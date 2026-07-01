@@ -1,4 +1,4 @@
-import axios from "axios";
+import { apiClient } from "./apiClient";
 
 export interface BudgetReportFilter {
   projectId?: string;
@@ -6,17 +6,19 @@ export interface BudgetReportFilter {
 }
 
 export interface BudgetReportItem {
-  projectName: string;
-  categoryName: string;
+  category: string;
+  budgetLine: string;
   budget: number;
-  spent: number;
+  committed: number;
+  actual: number;
   remaining: number;
 }
 
 export interface BudgetReport {
   totalBudget: number;
-  totalSpent: number;
-  remaining: number;
+  totalCommitted: number;
+  totalActual: number;
+  totalRemaining: number;
   items: BudgetReportItem[];
 }
 
@@ -33,7 +35,9 @@ export const getBudgetReport = async (
     params.append("categoryId", filter.categoryId);
   }
 
-  const response = await axios.get(`/budget-reports?${params.toString()}`);
+  const { data } = await apiClient.get<BudgetReport>(
+    `/budget-reports?${params.toString()}`
+  );
 
-  return response.data;
+  return data;
 };
