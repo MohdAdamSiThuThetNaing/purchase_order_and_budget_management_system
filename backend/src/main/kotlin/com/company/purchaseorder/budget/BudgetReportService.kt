@@ -3,10 +3,12 @@ package com.company.purchaseorder.budget
 import com.company.purchaseorder.auth.controller.AuthenticatedUser
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
 import java.util.UUID
 
 @Service
+@Transactional(readOnly = true)
 class BudgetReportService(
     private val budgetLineRepository: BudgetLineRepository
 ) {
@@ -34,6 +36,7 @@ class BudgetReportService(
         projectId: UUID?,
         categoryId: UUID?
     ): BudgetReportSummaryResponse {
+
         val organizationId = getOrganizationId()
 
         val lines = when {
@@ -45,7 +48,8 @@ class BudgetReportService(
                 budgetLineRepository.findAllByProject_Id(projectId)
                     .filter { it.organization.id == organizationId }
 
-            else -> budgetLineRepository.findAllByOrganization_Id(organizationId)
+            else ->
+                budgetLineRepository.findAllByOrganization_Id(organizationId)
         }
 
         val items = lines
@@ -64,26 +68,12 @@ class BudgetReportService(
                 )
             }
 
-        val totalBudget = items.fold(BigDecimal.ZERO) { acc, item ->
-            acc.add(item.budget)
-        }
-        val totalCommitted = items.fold(BigDecimal.ZERO) { acc, item ->
-            acc.add(item.committed)
-        }
-        val totalActual = items.fold(BigDecimal.ZERO) { acc, item ->
-            acc.add(item.actual)
-        }
-        val totalRemaining = items.fold(BigDecimal.ZERO) { acc, item ->
-            acc.add(item.remaining)
-        }
-
         return BudgetReportSummaryResponse(
-            totalBudget = totalBudget,
-            totalCommitted = totalCommitted,
-            totalActual = totalActual,
-            totalRemaining = totalRemaining,
+            totalBudget = items.sumOf { it.budget },
+            totalCommitted = items.sumOf { it.committed },
+            totalActual = items.sumOf { it.actual },
+            totalRemaining = items.sumOf { it.remaining },
             items = items
         )
     }
 }
-
