@@ -5,6 +5,8 @@ import com.company.purchaseorder.notification.NotificationType
 import jakarta.persistence.*
 import java.time.OffsetDateTime
 import java.util.UUID
+import org.hibernate.annotations.JdbcTypeCode
+import org.hibernate.type.SqlTypes
 
 @Entity
 @Table(name = "notifications")
@@ -19,7 +21,8 @@ open class Notification(
     open var user: User,
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(columnDefinition = "notification_type", nullable = false)
     open var type: NotificationType,
 
     @Column(nullable = false, length = 150)

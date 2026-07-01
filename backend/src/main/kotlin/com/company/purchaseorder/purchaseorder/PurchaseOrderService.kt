@@ -11,6 +11,11 @@ import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
 import java.time.OffsetDateTime
 import java.util.UUID
+import com.company.purchaseorder.auth.repository.UserRepository
+import com.company.purchaseorder.notification.NotificationService
+import com.company.purchaseorder.notification.NotificationType
+
+
 
 @Service
 class PurchaseOrderService(
@@ -20,7 +25,10 @@ class PurchaseOrderService(
     private val organizationRepository: OrganizationRepository,
     private val projectRepository: ProjectRepository,
     private val vendorRepository: VendorRepository,
-    private val budgetLineRepository: BudgetLineRepository
+    private val budgetLineRepository: BudgetLineRepository,
+
+    private val notificationService: NotificationService,
+    private val userRepository: UserRepository
 ) {
 
     private fun getAuthUser(): AuthenticatedUser {
@@ -45,6 +53,24 @@ class PurchaseOrderService(
 
     private fun getUserId(): UUID =
         getAuthUser().id
+
+    private fun createNotification(
+        type: NotificationType,
+        title: String,
+        message: String
+    ) {
+        val user = userRepository.findById(getUserId())
+            .orElseThrow {
+                RuntimeException("User not found.")
+            }
+
+        notificationService.create(
+            user = user,
+            type = type,
+            title = title,
+            message = message
+        )
+    }
 
     @Transactional
     fun createPurchaseOrder(
@@ -93,6 +119,12 @@ class PurchaseOrderService(
         po.totalAmount = calculateItemsTotal(request.items)
 
         val saved = purchaseOrderRepository.save(po)
+
+        createNotification(
+            NotificationType.PO_SUBMITTED,
+            "Purchase Order Submitted",
+            "Purchase Order ${saved.poNumber} has been submitted."
+        )
 
         return toResponse(saved)
     }
@@ -193,6 +225,12 @@ class PurchaseOrderService(
 
         val saved = purchaseOrderRepository.save(po)
 
+        createNotification(
+            NotificationType.PO_SUBMITTED,
+            "Purchase Order Submitted",
+            "Purchase Order ${saved.poNumber} has been submitted."
+        )
+
         return toResponse(saved)
     }
 
@@ -218,6 +256,12 @@ class PurchaseOrderService(
 
         val saved = purchaseOrderRepository.save(po)
 
+        createNotification(
+            NotificationType.PO_REJECTED,
+            "Purchase Order Rejected",
+            "Purchase Order ${saved.poNumber} has been rejected."
+        )
+
         return toResponse(saved)
     }
 
@@ -240,6 +284,12 @@ class PurchaseOrderService(
 
         val saved = purchaseOrderRepository.save(po)
 
+        createNotification(
+            NotificationType.PO_APPROVED,
+            "Purchase Order Approved",
+            "Purchase Order ${saved.poNumber} has been approved."
+        )
+
         return toResponse(saved)
     }
 
@@ -261,6 +311,12 @@ class PurchaseOrderService(
         po.updatedAt = OffsetDateTime.now()
 
         val saved = purchaseOrderRepository.save(po)
+
+        createNotification(
+            NotificationType.PO_REJECTED,
+            "Purchase Order Rejected",
+            "Purchase Order ${saved.poNumber} has been rejected."
+        )
 
         return toResponse(saved)
     }
