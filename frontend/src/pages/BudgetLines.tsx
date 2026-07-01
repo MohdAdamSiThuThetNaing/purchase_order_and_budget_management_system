@@ -16,8 +16,11 @@ const BudgetLines = () => {
   const [budgetLines, setBudgetLines] = useState<BudgetLine[]>([]);
 
   const [form, setForm] = useState<CreateBudgetLineRequest>({
+    projectId: "",
+    budgetId: "",
+    categoryId: "",
     name: "",
-    allocatedAmount: 0,
+    budgetAmount: 0,
     description: "",
   });
 
@@ -39,14 +42,18 @@ const BudgetLines = () => {
   }, []);
 
   const handleCreate = async () => {
-    if (!form.name.trim()) return;
+    if (!form.name.trim() || !form.projectId || !form.budgetId || !form.categoryId)
+      return;
 
     try {
       await createBudgetLine(form);
 
       setForm({
+        projectId: form.projectId,
+        budgetId: form.budgetId,
+        categoryId: form.categoryId,
         name: "",
-        allocatedAmount: 0,
+        budgetAmount: 0,
         description: "",
       });
 
@@ -76,6 +83,42 @@ const BudgetLines = () => {
         <div className="budget-line-toolbar">
           <input
             className="budget-line-input"
+            placeholder="Project ID"
+            value={form.projectId}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                projectId: e.target.value,
+              })
+            }
+          />
+
+          <input
+            className="budget-line-input"
+            placeholder="Budget ID"
+            value={form.budgetId}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                budgetId: e.target.value,
+              })
+            }
+          />
+
+          <input
+            className="budget-line-input"
+            placeholder="Category ID"
+            value={form.categoryId}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                categoryId: e.target.value,
+              })
+            }
+          />
+
+          <input
+            className="budget-line-input"
             placeholder="Budget Line Name"
             value={form.name}
             onChange={(e) =>
@@ -89,12 +132,12 @@ const BudgetLines = () => {
           <input
             className="budget-line-input"
             type="number"
-            placeholder="Allocated Amount"
-            value={form.allocatedAmount}
+            placeholder="Budget Amount"
+            value={form.budgetAmount}
             onChange={(e) =>
               setForm({
                 ...form,
-                allocatedAmount: Number(e.target.value),
+                budgetAmount: Number(e.target.value),
               })
             }
           />

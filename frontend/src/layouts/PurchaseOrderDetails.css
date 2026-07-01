@@ -52,6 +52,16 @@
 }
 
 /* Status colors */
+.po-status.draft {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.po-status.submitted {
+  background: #fef3c7;
+  color: #92400e;
+}
+
 .po-status.pending {
   background: #fef3c7;
   color: #92400e;
@@ -67,9 +77,41 @@
   color: #991b1b;
 }
 
+.po-status.cancelled {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
 .po-status.completed {
   background: #dbeafe;
   color: #1e40af;
+}
+
+.po-header-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.po-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.po-header-actions .btn-edit {
+  background: #6366f1;
+  color: white;
+}
+
+.po-header-actions .btn-submit {
+  background: #059669;
+  color: white;
+}
+
+.po-header-actions .btn-cancel {
+  background: #f59e0b;
+  color: white;
 }
 
 /* Cards */

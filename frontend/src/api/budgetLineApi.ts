@@ -1,32 +1,21 @@
-import axios from "axios";
-
-export interface CreateBudgetLineRequest {
-  name: string;
-  allocatedAmount: number;
-  description?: string;
-}
-
-export interface BudgetLine {
-  id: string;
-  name: string;
-  allocatedAmount: number;
-  description?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
+import { apiClient } from "./apiClient";
+import type {
+  BudgetLine,
+  CreateBudgetLineRequest,
+} from "../types/budgetLine";
 
 export const getBudgetLines = async (): Promise<BudgetLine[]> => {
-  const response = await axios.get("/budget-lines");
-  return response.data;
+  const { data } = await apiClient.get("/budget-lines");
+  return data;
 };
 
 export const createBudgetLine = async (
   payload: CreateBudgetLineRequest
 ): Promise<BudgetLine> => {
-  const response = await axios.post("/budget-lines", payload);
-  return response.data;
+  const { data } = await apiClient.post("/budget-lines", payload);
+  return data;
 };
 
 export const deleteBudgetLine = async (id: string): Promise<void> => {
-  await axios.delete(`/budget-lines/${id}`);
+  await apiClient.delete(`/budget-lines/${id}`);
 };

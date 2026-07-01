@@ -38,6 +38,12 @@ class PurchaseOrderItem(
     @Column(name = "unit_price", nullable = false, precision = 14, scale = 2)
     var unitPrice: BigDecimal,
 
-    @Column(nullable = false, precision = 14, scale = 2)
-    var total: BigDecimal
+    @Column(
+        nullable = false,
+        precision = 14,
+        scale = 2,
+        insertable = false,
+        updatable = false
+    )
+    var total: BigDecimal = BigDecimal.ZERO
 )

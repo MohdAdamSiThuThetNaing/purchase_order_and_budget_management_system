@@ -18,6 +18,7 @@ import ApprovalQueue from "./pages/ApprovalQueue";
 import BudgetReport from "./pages/BudgetReport";
 import NotificationCenter from "./pages/NotificationCenter";
 import PurchaseOrderDetails from "./pages/PurchaseOrderDetails";
+import PurchaseOrderForm from "./pages/PurchaseOrderForm";
 
 export default function App() {
   return (
@@ -67,6 +68,24 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <PurchaseOrders />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/purchase-orders/new"
+            element={
+              <ProtectedRoute>
+                <PurchaseOrderForm />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/purchase-orders/:id/edit"
+            element={
+              <ProtectedRoute>
+                <PurchaseOrderForm />
               </ProtectedRoute>
             }
           />

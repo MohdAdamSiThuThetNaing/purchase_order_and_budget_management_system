@@ -1,161 +1,210 @@
 import { useEffect, useState } from "react";
-
+import { Link, useNavigate } from "react-router-dom";
 import {
   getPurchaseOrders,
-  createPurchaseOrder,
   deletePurchaseOrder,
+  submitPurchaseOrder,
+  cancelPurchaseOrder,
 } from "../api/purchaseOrderApi";
-
-import type {
-  PurchaseOrder,
-  PurchaseOrderStatus,
-} from "../types/purchaseOrder";
-
-import PurchaseOrderTable from "../components/PurchaseOrderTable";
-
+import { getVendors } from "../api/vendorApi";
+import type { PurchaseOrder } from "../types/purchaseOrder";
+import type { Vendor } from "../types/vendor";
 import "../layouts/PurchaseOrder.css";
 
+const formatCurrency = (amount: number) =>
+  new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(amount);
+
+const statusClass = (status: string) => {
+  switch (status) {
+    case "DRAFT":
+      return "status-draft";
+    case "SUBMITTED":
+      return "status-submitted";
+    case "APPROVED":
+      return "status-approved";
+    case "REJECTED":
+      return "status-rejected";
+    case "CANCELLED":
+      return "status-cancelled";
+    default:
+      return "";
+  }
+};
+
 const PurchaseOrders = () => {
-  const [purchaseOrders, setPurchaseOrders] = useState<PurchaseOrder[]>([]);
+  const navigate = useNavigate();
+  const [orders, setOrders] = useState<PurchaseOrder[]>([]);
+  const [vendors, setVendors] = useState<Vendor[]>([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  const [projectId, setProjectId] = useState("");
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [amount, setAmount] = useState("");
-  const [vendor, setVendor] = useState("");
-  const [orderDate, setOrderDate] = useState("");
-  const [status, setStatus] = useState<PurchaseOrderStatus>("PENDING");
+  const vendorName = (vendorId: string) =>
+    vendors.find((v) => v.id === vendorId)?.name ?? vendorId;
 
-  const loadPurchaseOrders = async () => {
+  const load = async () => {
     try {
-      const data = await getPurchaseOrders();
-      setPurchaseOrders(data);
-    } catch (error) {
-      console.error(error);
+      setLoading(true);
+      setError("");
+      const [orderData, vendorData] = await Promise.all([
+        getPurchaseOrders(),
+        getVendors(),
+      ]);
+      setOrders(orderData);
+      setVendors(vendorData);
+    } catch (err: unknown) {
+      const message =
+        (err as { response?: { data?: { message?: string } } })?.response?.data
+          ?.message ?? "Failed to load purchase orders.";
+      setError(message);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      await loadPurchaseOrders();
-    };
-
-    fetchData();
+    load();
   }, []);
 
-  const handleCreate = async () => {
-    if (!projectId || !title || !amount || !vendor || !orderDate) {
-      return;
-    }
+  const handleDelete = async (id: string) => {
+    if (!window.confirm("Delete this draft purchase order?")) return;
 
     try {
-      await createPurchaseOrder({
-        projectId,
-        title,
-        description,
-        amount: Number(amount),
-        vendor,
-        orderDate,
-        status,
-      });
-
-      setProjectId("");
-      setTitle("");
-      setDescription("");
-      setAmount("");
-      setVendor("");
-      setOrderDate("");
-      setStatus("PENDING");
-
-      await loadPurchaseOrders();
-    } catch (error) {
-      console.error(error);
+      await deletePurchaseOrder(id);
+      await load();
+    } catch (err: unknown) {
+      const message =
+        (err as { response?: { data?: { message?: string } } })?.response?.data
+          ?.message ?? "Failed to delete purchase order.";
+      alert(message);
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleSubmit = async (id: string) => {
+    if (!window.confirm("Submit this purchase order for approval?")) return;
+
     try {
-      await deletePurchaseOrder(id);
-      await loadPurchaseOrders();
-    } catch (error) {
-      console.error(error);
+      await submitPurchaseOrder(id);
+      await load();
+    } catch (err: unknown) {
+      const message =
+        (err as { response?: { data?: { message?: string } } })?.response?.data
+          ?.message ?? "Failed to submit purchase order.";
+      alert(message);
+    }
+  };
+
+  const handleCancel = async (id: string) => {
+    if (!window.confirm("Cancel this purchase order?")) return;
+
+    try {
+      await cancelPurchaseOrder(id);
+      await load();
+    } catch (err: unknown) {
+      const message =
+        (err as { response?: { data?: { message?: string } } })?.response?.data
+          ?.message ?? "Failed to cancel purchase order.";
+      alert(message);
     }
   };
 
   return (
     <div className="purchase-order-page">
       <div className="purchase-order-header">
-        <h1>Purchase Orders</h1>
-        <p>Manage purchase orders for your organization.</p>
-      </div>
-
-      <div className="purchase-order-card">
-        <div className="purchase-order-toolbar">
-          <input
-            className="purchase-order-input"
-            placeholder="Project ID"
-            value={projectId}
-            onChange={(e) => setProjectId(e.target.value)}
-          />
-
-          <input
-            className="purchase-order-input"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-
-          <textarea
-            className="purchase-order-textarea"
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-
-          <input
-            className="purchase-order-input"
-            type="number"
-            placeholder="Amount"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-          />
-
-          <input
-            className="purchase-order-input"
-            placeholder="Vendor"
-            value={vendor}
-            onChange={(e) => setVendor(e.target.value)}
-          />
-
-          <input
-            className="purchase-order-input"
-            type="date"
-            value={orderDate}
-            onChange={(e) => setOrderDate(e.target.value)}
-          />
-
-          <select
-            className="purchase-order-select"
-            value={status}
-            onChange={(e) => setStatus(e.target.value as PurchaseOrderStatus)}
-          >
-            <option value="PENDING">PENDING</option>
-            <option value="APPROVED">APPROVED</option>
-            <option value="REJECTED">REJECTED</option>
-            <option value="COMPLETED">COMPLETED</option>
-          </select>
-
-          <button className="purchase-order-button" onClick={handleCreate}>
-            Create Purchase Order
-          </button>
+        <div>
+          <h1>Purchase Orders</h1>
+          <p>Create, edit, submit, and view purchase orders</p>
         </div>
+        <Link className="purchase-order-button" to="/purchase-orders/new">
+          New Purchase Order
+        </Link>
       </div>
 
+      {error && <p className="purchase-order-error">{error}</p>}
+
       <div className="purchase-order-card">
-        <PurchaseOrderTable
-          purchaseOrders={purchaseOrders}
-          onDelete={handleDelete}
-        />
+        {loading ? (
+          <p>Loading...</p>
+        ) : orders.length === 0 ? (
+          <p className="purchase-order-empty">No purchase orders yet.</p>
+        ) : (
+          <table className="purchase-order-table">
+            <thead>
+              <tr>
+                <th>PO Number</th>
+                <th>Vendor</th>
+                <th>Status</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order.id}>
+                  <td>
+                    <Link to={`/purchase-orders/${order.id}`}>
+                      {order.poNumber}
+                    </Link>
+                  </td>
+                  <td>{vendorName(order.vendorId)}</td>
+                  <td>
+                    <span
+                      className={`purchase-order-status ${statusClass(order.status)}`}
+                    >
+                      {order.status}
+                    </span>
+                  </td>
+                  <td>{order.items?.length ?? 0}</td>
+                  <td>{formatCurrency(order.totalAmount)}</td>
+                  <td className="purchase-order-actions">
+                    <button
+                      className="btn-view"
+                      onClick={() => navigate(`/purchase-orders/${order.id}`)}
+                    >
+                      View
+                    </button>
+                    {order.status === "DRAFT" && (
+                      <>
+                        <button
+                          className="btn-edit"
+                          onClick={() =>
+                            navigate(`/purchase-orders/${order.id}/edit`)
+                          }
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="btn-submit"
+                          onClick={() => handleSubmit(order.id)}
+                        >
+                          Submit
+                        </button>
+                        <button
+                          className="btn-delete"
+                          onClick={() => handleDelete(order.id)}
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
+                    {(order.status === "DRAFT" ||
+                      order.status === "SUBMITTED") && (
+                      <button
+                        className="btn-cancel"
+                        onClick={() => handleCancel(order.id)}
+                      >
+                        Cancel
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

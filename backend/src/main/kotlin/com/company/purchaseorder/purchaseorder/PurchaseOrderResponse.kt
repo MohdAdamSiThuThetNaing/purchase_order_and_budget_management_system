@@ -26,5 +26,7 @@ data class PurchaseOrderResponse(
 
     val decidedAt: OffsetDateTime?,
 
-    val version: Int
+    val version: Int,
+
+    val items: List<PurchaseOrderItemResponse> = emptyList()
 )

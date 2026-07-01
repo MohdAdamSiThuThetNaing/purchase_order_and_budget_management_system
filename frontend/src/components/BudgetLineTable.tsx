@@ -14,9 +14,8 @@ const BudgetLineTable = ({ budgetLines = [], onDelete }: Props) => {
         <thead>
           <tr>
             <th>Name</th>
-            <th>Allocated Amount</th>
-            <th>Description</th>
-            <th>Created At</th>
+            <th>Budget Amount</th>
+            <th>Remaining</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -34,18 +33,18 @@ const BudgetLineTable = ({ budgetLines = [], onDelete }: Props) => {
                 <td>{line.name}</td>
 
                 <td>
-                  {typeof line.allocatedAmount === "number"
-                    ? line.allocatedAmount.toLocaleString()
-                    : line.allocatedAmount ?? "-"}
+                  {typeof line.budgetAmount === "number"
+                    ? line.budgetAmount.toLocaleString()
+                    : "-"}
+                </td>
+
+                <td>
+                  {typeof line.remainingAmount === "number"
+                    ? line.remainingAmount.toLocaleString()
+                    : "-"}
                 </td>
 
                 <td>{line.description ?? "-"}</td>
-
-                <td>
-                  {line.createdAt
-                    ? new Date(line.createdAt).toLocaleDateString()
-                    : "-"}
-                </td>
 
                 <td>
                   <button

@@ -1,40 +1,53 @@
 export type PurchaseOrderStatus =
-  | "PENDING"
+  | "DRAFT"
+  | "SUBMITTED"
   | "APPROVED"
   | "REJECTED"
-  | "COMPLETED";
+  | "CANCELLED";
+
+export interface PurchaseOrderItem {
+  id: string;
+  budgetLineId: string;
+  description: string;
+  quantity: number;
+  unitPrice: number;
+  total: number;
+}
 
 export interface PurchaseOrder {
   id: string;
   organizationId: string;
   projectId: string;
   vendorId: string;
-  approvalWorkflowId?: string | null;
-  currentApprovalStep: number;
   poNumber: string;
   totalAmount: number;
-  status: "PENDING" | "APPROVED" | "REJECTED" | "COMPLETED";
+  status: PurchaseOrderStatus;
   createdBy: string;
-  submittedAt?: string | null;
-  decidedAt?: string | null;
+  submittedAt?: string;
+  decidedAt?: string;
   version: number;
+  items: PurchaseOrderItem[];
+}
+
+export interface PurchaseOrderItemRequest {
+  budgetLineId: string;
+  description: string;
+  quantity: number;
+  unitPrice: number;
+}
+
+export interface UpdatePurchaseOrderItemRequest extends PurchaseOrderItemRequest {
+  id?: string;
 }
 
 export interface CreatePurchaseOrderRequest {
   projectId: string;
-  title: string;
-  description?: string;
-  amount: number;
-  vendor: string;
-  orderDate: string;
-  status: PurchaseOrderStatus;
+  vendorId: string;
+  items: PurchaseOrderItemRequest[];
 }
 
 export interface UpdatePurchaseOrderRequest {
-  title: string;
-  description?: string;
-  amount: number;
-  vendor: string;
-  orderDate: string;
-  status: PurchaseOrderStatus;
+  projectId: string;
+  vendorId: string;
+  items: UpdatePurchaseOrderItemRequest[];
 }
