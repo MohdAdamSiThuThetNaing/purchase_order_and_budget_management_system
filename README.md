@@ -218,6 +218,26 @@ Permissions can easily be extended by inserting additional database records.
 
 ---
 
+Employee
+│
+▼
+Create Purchase Order
+│
+▼
+Draft
+│
+▼
+Submit
+│
+▼
+Manager Approval
+│
+▼
+Finance Approval
+│
+▼
+Approved / Rejected
+
 # Multi-Tenancy
 
 Every business record belongs to an Organization.
@@ -232,6 +252,37 @@ Examples:
 Service-layer authorization ensures users only access data belonging to their own organization.
 
 ---
+
+# Notification System
+
+The application includes a real-time notification system for important business events.
+
+Features:
+
+- Notification Bell
+- Unread Notification Counter
+- Notification Center
+- Notification Popup
+- Mark Notification as Read
+- Automatic Polling
+- Responsive Notification Dropdown
+
+Notifications are generated for:
+
+- Purchase Order Submitted
+- Purchase Order Approved
+- Purchase Order Rejected
+- Budget Threshold Exceeded
+
+# Vendor Management
+
+The Vendor module provides:
+
+- Create Vendor
+- Update Vendor
+- Delete Vendor
+- View Vendors
+- Organization-based Access Control
 
 # Approval Workflow
 
