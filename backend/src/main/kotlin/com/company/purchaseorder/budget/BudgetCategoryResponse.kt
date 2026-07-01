@@ -12,6 +12,8 @@ data class BudgetCategoryResponse(
 
     val budgetId: UUID,
 
+    val budgetName: String,
+
     val name: String,
 
     val description: String?,

@@ -170,6 +170,7 @@ class BudgetCategoryService(
             organizationId = category.organization.id!!,
             projectId = category.project.id!!,
             budgetId = category.budget.id!!,
+            budgetName = category.budget.name,
             name = category.name,
             description = category.description,
             active = category.active

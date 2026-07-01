@@ -1,21 +1,12 @@
 import { apiClient } from "./apiClient";
 
-export interface CreateBudgetCategoryRequest {
-  name: string;
-  description?: string;
-}
-
-export interface BudgetCategory {
-  id: string;
-  name: string;
-  description?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
+import type {
+  BudgetCategory,
+  CreateBudgetCategoryRequest,
+} from "../types/budgetCategory";
 
 export const getBudgetCategories = async (): Promise<BudgetCategory[]> => {
   const { data } = await apiClient.get<BudgetCategory[]>("/budget-categories");
-
   return data;
 };
 

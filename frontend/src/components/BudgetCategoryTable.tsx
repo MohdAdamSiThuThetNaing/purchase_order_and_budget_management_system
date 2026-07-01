@@ -13,9 +13,9 @@ const BudgetCategoryTable = ({ categories, onDelete }: Props) => {
       <table className="table">
         <thead>
           <tr>
-            <th>Name</th>
+            <th>Budget</th>
+            <th>Category</th>
             <th>Description</th>
-            <th>Created At</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -30,13 +30,9 @@ const BudgetCategoryTable = ({ categories, onDelete }: Props) => {
           ) : (
             safeCategories.map((category) => (
               <tr key={category.id}>
+                <td>{category.budgetName}</td>
                 <td>{category.name}</td>
                 <td>{category.description || "-"}</td>
-                <td>
-                  {category.createdAt
-                    ? new Date(category.createdAt).toLocaleDateString()
-                    : "-"}
-                </td>
                 <td>
                   <button
                     className="delete-button"

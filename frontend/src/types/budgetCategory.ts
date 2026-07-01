@@ -1,12 +1,23 @@
 export interface BudgetCategory {
   id: string;
-  name: string;
-  description?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
 
+  organizationId: string;
+
+  projectId: string;
+
+  budgetId: string;
+
+  budgetName: string;
+
+  name: string;
+
+  description?: string;
+
+  active: boolean;
+}
 export interface CreateBudgetCategoryRequest {
+  budgetId: string;
+  projectId: string;
   name: string;
   description?: string;
 }

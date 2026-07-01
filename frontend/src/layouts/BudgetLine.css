@@ -1,105 +1,273 @@
+/* ============================
+   Page
+============================ */
+
 .budget-line-page {
-  padding: 20px;
+  min-height: 100vh;
+  background: #f4f7fc;
+  padding: 48px 24px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  box-sizing: border-box;
 }
 
-/* Header */
+/* ============================
+   Header
+============================ */
+
 .budget-line-header {
-  background: #ffffff;
-  padding: 16px 20px;
-  border-radius: 10px;
-  border: 1px solid #e5e7eb;
+  width: 100%;
+  max-width: 1000px;
+  margin-bottom: 24px;
 }
 
 .budget-line-header h1 {
   margin: 0;
-  font-size: 22px;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
 }
 
 .budget-line-header p {
-  margin: 4px 0 0;
+  margin-top: 8px;
   color: #6b7280;
+  font-size: 15px;
 }
 
-/* Card */
+/* ============================
+   Card
+============================ */
+
 .budget-line-card {
+  width: 100%;
+  max-width: 1000px;
   background: #ffffff;
-  padding: 16px;
-  border-radius: 10px;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
   border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  box-sizing: border-box;
 }
 
-/* Toolbar */
+/* ============================
+   Toolbar
+============================ */
+
 .budget-line-toolbar {
   display: flex;
-  gap: 10px;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-end;
+  gap: 16px;
 }
 
-/* Inputs */
+/* ============================
+   Inputs
+============================ */
+
 .budget-line-input {
-  padding: 10px 12px;
+  flex: 1;
+  min-width: 180px;
+  height: 48px;
+  padding: 0 16px;
   border: 1px solid #d1d5db;
-  border-radius: 6px;
-  min-width: 200px;
-  outline: none;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #111827;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
 .budget-line-input:focus {
-  border-color: #3b82f6;
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
-/* Button */
-.budget-line-button {
-  padding: 10px 14px;
-  background: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 6px;
+.budget-line-input[type="number"] {
+  appearance: textfield;
+}
+
+/* ============================
+   Select
+============================ */
+
+select.budget-line-input {
+  min-width: 220px;
   cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  padding-right: 42px;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 8 10 12 14 8'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 18px;
+}
+
+select.budget-line-input:hover {
+  border-color: #93c5fd;
+}
+
+select.budget-line-input option {
+  background: #ffffff;
+  color: #111827;
+}
+
+/* ============================
+   Checkbox
+============================ */
+
+.budget-line-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #374151;
+  font-size: 14px;
   font-weight: 500;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.budget-line-checkbox input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #2563eb;
+}
+
+/* ============================
+   Button
+============================ */
+
+.budget-line-button {
+  height: 48px;
+  min-width: 170px;
+  padding: 0 26px;
+  border: none;
+  border-radius: 10px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .budget-line-button:hover {
-  background: #2563eb;
+  background: #1d4ed8;
+  transform: translateY(-1px);
 }
 
-/* Table */
-.table-container {
-  overflow-x: auto;
+.budget-line-button:active {
+  transform: translateY(0);
 }
 
-.table {
+/* ============================
+   Error
+============================ */
+
+.budget-line-error {
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #dc2626;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ============================
+   Table
+============================ */
+
+.budget-line-card table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 600px;
 }
 
-.table th,
-.table td {
-  padding: 12px;
-  border-bottom: 1px solid #e5e7eb;
-  text-align: left;
-}
-
-.table th {
+.budget-line-card thead {
   background: #f9fafb;
+}
+
+.budget-line-card th {
+  padding: 16px;
+  text-align: left;
+  font-size: 14px;
   font-weight: 600;
+  color: #374151;
+  border-bottom: 2px solid #e5e7eb;
 }
 
-/* Delete button */
-.delete-button {
+.budget-line-card td {
+  padding: 16px;
+  border-bottom: 1px solid #eef2f7;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.budget-line-card tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* ============================
+   Delete Button
+============================ */
+
+.budget-line-card td button {
   background: #ef4444;
-  color: white;
+  color: #ffffff;
   border: none;
-  padding: 6px 10px;
-  border-radius: 5px;
+  border-radius: 8px;
+  padding: 8px 14px;
   cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-.delete-button:hover {
+.budget-line-card td button:hover {
   background: #dc2626;
+}
+
+/* ============================
+   Responsive
+============================ */
+
+@media (max-width: 768px) {
+  .budget-line-page {
+    padding: 24px 16px;
+  }
+
+  .budget-line-header,
+  .budget-line-card {
+    max-width: 100%;
+  }
+
+  .budget-line-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .budget-line-input,
+  select.budget-line-input,
+  .budget-line-button,
+  .budget-line-checkbox {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .budget-line-checkbox {
+    justify-content: flex-start;
+  }
 }

@@ -1,0 +1,204 @@
+/* ============================
+   Page
+============================ */
+
+.notification-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 40px 50px;
+  background: #f4f7fc;
+  box-sizing: border-box;
+}
+
+/* ============================
+   Header
+============================ */
+
+.notification-header {
+  margin-bottom: 30px;
+}
+
+.notification-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.notification-header p {
+  margin-top: 8px;
+  color: #6b7280;
+  font-size: 15px;
+}
+
+/* ============================
+   Card
+============================ */
+
+.notification-card {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 24px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+/* ============================
+   Table
+============================ */
+
+.notification-card table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.notification-card thead {
+  background: #f9fafb;
+}
+
+.notification-card th {
+  padding: 16px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.notification-card td {
+  padding: 16px;
+  border-bottom: 1px solid #eef2f7;
+  font-size: 14px;
+  color: #111827;
+  vertical-align: middle;
+}
+
+.notification-card tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* ============================
+   Unread Notification
+============================ */
+
+.notification-unread {
+  background: #eff6ff;
+  font-weight: 600;
+}
+
+.notification-read {
+  background: #ffffff;
+}
+
+/* ============================
+   Status Icon
+============================ */
+
+.notification-status {
+  font-size: 22px;
+  text-align: center;
+  width: 50px;
+}
+
+/* ============================
+   Buttons
+============================ */
+
+.notification-button {
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.notification-button:hover {
+  background: #1d4ed8;
+}
+
+.notification-button:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+}
+
+/* ============================
+   Pagination
+============================ */
+
+.notification-pagination {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.notification-pagination span {
+  color: #4b5563;
+  font-weight: 500;
+}
+
+/* ============================
+   Error
+============================ */
+
+.notification-error {
+  margin-bottom: 20px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ============================
+   Empty State
+============================ */
+
+.notification-empty {
+  padding: 40px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 15px;
+}
+
+/* ============================
+   Loading
+============================ */
+
+.notification-loading {
+  padding: 40px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 15px;
+}
+
+/* ============================
+   Responsive
+============================ */
+
+@media (max-width: 768px) {
+  .notification-page {
+    padding: 20px;
+  }
+
+  .notification-card {
+    overflow-x: auto;
+  }
+
+  .notification-card table {
+    min-width: 750px;
+  }
+
+  .notification-pagination {
+    flex-wrap: wrap;
+  }
+}

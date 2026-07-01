@@ -3,10 +3,12 @@
 ============================ */
 
 .user-page {
-  width: 100%;
   min-height: 100vh;
-  padding: 40px 50px;
   background: #f4f7fc;
+  padding: 48px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   box-sizing: border-box;
 }
 
@@ -15,7 +17,9 @@
 ============================ */
 
 .user-header {
-  margin-bottom: 30px;
+  width: 100%;
+  max-width: 1000px;
+  margin-bottom: 24px;
 }
 
 .user-header h1 {
@@ -37,12 +41,14 @@
 
 .user-card {
   width: 100%;
+  max-width: 1000px;
   background: #ffffff;
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 24px;
   margin-bottom: 24px;
   border: 1px solid #e5e7eb;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  box-sizing: border-box;
 }
 
 /* ============================
@@ -63,18 +69,24 @@
 .user-select,
 .user-textarea {
   width: 100%;
-  height: 48px;
   border: 1px solid #d1d5db;
   border-radius: 10px;
-  padding: 0 16px;
   font-size: 15px;
-  transition: 0.2s;
+  color: #111827;
+  background: #ffffff;
+  transition: all 0.2s ease;
   box-sizing: border-box;
   font-family: inherit;
 }
 
+.user-input,
+.user-select {
+  height: 48px;
+  padding: 0 16px;
+}
+
 .user-textarea {
-  height: 120px;
+  min-height: 120px;
   padding: 14px 16px;
   resize: vertical;
 }
@@ -88,25 +100,99 @@
 }
 
 /* ============================
+   Select
+============================ */
+
+.user-select {
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  padding-right: 42px;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 8 10 12 14 8'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 18px;
+}
+
+.user-select:hover {
+  border-color: #93c5fd;
+}
+
+.user-select option {
+  background: #ffffff;
+  color: #111827;
+}
+
+/* ============================
+   Checkbox
+============================ */
+
+.user-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.user-checkbox input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #2563eb;
+}
+
+/* ============================
    Button
 ============================ */
 
 .user-button {
+  align-self: flex-start;
   height: 48px;
+  min-width: 170px;
   padding: 0 26px;
   border: none;
   border-radius: 10px;
   background: #2563eb;
-  color: white;
+  color: #ffffff;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.25s;
-  align-self: flex-start;
+  transition: all 0.2s ease;
 }
 
 .user-button:hover {
   background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.user-button:active {
+  transform: translateY(0);
+}
+
+/* ============================
+   Error
+============================ */
+
+.user-error {
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #dc2626;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 /* ============================
@@ -126,6 +212,7 @@
   padding: 16px;
   text-align: left;
   font-size: 14px;
+  font-weight: 600;
   color: #374151;
   border-bottom: 2px solid #e5e7eb;
 }
@@ -133,22 +220,27 @@
 .user-card td {
   padding: 16px;
   border-bottom: 1px solid #eef2f7;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .user-card tbody tr:hover {
   background: #f8fafc;
 }
 
-/* Delete button */
+/* ============================
+   Action Buttons
+============================ */
 
 .user-card td button {
   background: #ef4444;
-  color: white;
+  color: #ffffff;
   border: none;
   border-radius: 8px;
   padding: 8px 14px;
   cursor: pointer;
-  font-size: 14px;
+  transition: background 0.2s ease;
 }
 
 .user-card td button:hover {
@@ -161,7 +253,12 @@
 
 @media (max-width: 768px) {
   .user-page {
-    padding: 20px;
+    padding: 24px 16px;
+  }
+
+  .user-header,
+  .user-card {
+    max-width: 100%;
   }
 
   .user-button {
