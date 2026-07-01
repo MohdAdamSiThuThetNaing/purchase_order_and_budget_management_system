@@ -3,6 +3,8 @@ package com.company.purchaseorder.purchaseorder
 import com.company.purchaseorder.organization.Organization
 import com.company.purchaseorder.project.Project
 import jakarta.persistence.*
+import org.hibernate.annotations.JdbcType
+import org.hibernate.dialect.PostgreSQLEnumJdbcType
 import java.math.BigDecimal
 import java.time.OffsetDateTime
 import java.util.UUID
@@ -33,15 +35,12 @@ class PurchaseOrder(
     @Column(name = "current_approval_step", nullable = false)
     var currentApprovalStep: Int = 0,
 
-    @Column(
-        name = "po_number",
-        nullable = false,
-        length = 50
-    )
+    @Column(name = "po_number", nullable = false, length = 50)
     var poNumber: String,
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @JdbcType(PostgreSQLEnumJdbcType::class)
+    @Column(name = "status", columnDefinition = "po_status", nullable = false)
     var status: PurchaseOrderStatus = PurchaseOrderStatus.DRAFT,
 
     @Column(
