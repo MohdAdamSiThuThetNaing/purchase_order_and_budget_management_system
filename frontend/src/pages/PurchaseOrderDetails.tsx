@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getPurchaseOrder } from "../api/purchaseOrderApi";
 import type { PurchaseOrder } from "../types/purchaseOrder";
 
-import "./PurchaseOrderDetails.css";
+import "../layouts/PurchaseOrderDetails.css";
 
 const PurchaseOrderDetails = () => {
   const { id } = useParams();

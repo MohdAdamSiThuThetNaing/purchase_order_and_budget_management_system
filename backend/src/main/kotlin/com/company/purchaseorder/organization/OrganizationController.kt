@@ -42,6 +42,7 @@ class OrganizationController(
     fun deleteOrganization(
         @PathVariable id: UUID
     ) {
+        println("DELETE controller reached: $id")
         organizationService.deleteOrganization(id)
     }
 }

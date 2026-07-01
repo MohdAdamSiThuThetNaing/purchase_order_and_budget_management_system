@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { getBudgetReport } from "../api/budgetReportApi";
 import type { BudgetReport as BudgetReportType } from "../types/budgetReport";
 
-import "./BudgetReport.css";
+import "../layouts/BudgetReport.css";
 
 const BudgetReport = () => {
   const [report, setReport] = useState<BudgetReportType | null>(null);

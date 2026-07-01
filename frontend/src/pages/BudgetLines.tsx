@@ -10,7 +10,7 @@ import {
 
 import type { BudgetLine, CreateBudgetLineRequest } from "../types/budgetLine";
 
-import "./BudgetLine.css";
+import "../layouts/BudgetLine.css";
 
 const BudgetLines = () => {
   const [budgetLines, setBudgetLines] = useState<BudgetLine[]>([]);

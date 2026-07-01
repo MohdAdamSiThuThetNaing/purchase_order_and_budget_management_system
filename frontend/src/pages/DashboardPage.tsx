@@ -3,7 +3,7 @@ import { useAuth } from "../hooks/useAuth";
 import { LogoutButton } from "../components/LogoutButton";
 import NotificationBell from "../components/NotificationBell";
 
-import "./DashboardPage.css";
+import "../layouts/DashboardPage.css";
 
 export function DashboardPage() {
   const { user } = useAuth();

@@ -8,15 +8,22 @@ import {
 } from "../api/organizationApi";
 
 import type { Organization } from "../types/organization";
-import "./Organization.css";
+import "../layouts/Organization.css";
 
 const Organizations = () => {
   const [organizations, setOrganizations] = useState<Organization[]>([]);
   const [name, setName] = useState("");
+  const [error, setError] = useState("");
 
   const loadOrganizations = async () => {
-    const data = await getOrganizations();
-    setOrganizations(data);
+    try {
+      setError("");
+
+      const data = await getOrganizations();
+      setOrganizations(data);
+    } catch (err: any) {
+      setError(err.response?.data?.message ?? "Failed to load organizations.");
+    }
   };
 
   useEffect(() => {
@@ -34,15 +41,52 @@ const Organizations = () => {
   const handleCreate = async () => {
     if (!name.trim()) return;
 
-    await createOrganization({ name });
+    try {
+      setError("");
 
-    setName("");
-    loadOrganizations();
+      await createOrganization({ name });
+
+      setName("");
+      loadOrganizations();
+    } catch (err: any) {
+      if (err.response?.status === 403) {
+        alert("You do not have permission to create organizations.");
+        setError("You do not have permission to create organizations.");
+      } else {
+        setError(
+          err.response?.data?.message ?? "Failed to create organization."
+        );
+      }
+    }
   };
 
   const handleDelete = async (id: string) => {
-    await deleteOrganization(id);
-    loadOrganizations();
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this organization?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      setError("");
+
+      await deleteOrganization(id);
+
+      loadOrganizations();
+    } catch (err: any) {
+      if (err.response?.status === 403) {
+        alert("You do not have permission to delete this organization.");
+        setError("You do not have permission to delete this organization.");
+      } else {
+        const message =
+          err.response?.data?.message ?? "Failed to delete organization.";
+
+        alert(message);
+        setError(message);
+      }
+    }
   };
 
   return (
@@ -70,6 +114,8 @@ const Organizations = () => {
       </div>
 
       <div className="organization-card">
+        {error && <div className="organization-error">{error}</div>}
+
         <OrganizationTable
           organizations={organizations}
           onDelete={handleDelete}

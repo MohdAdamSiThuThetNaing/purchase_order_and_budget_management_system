@@ -5,10 +5,6 @@ import java.util.UUID
 
 data class CreateBudgetRequest(
 
-    val id: UUID,
-
-    val organizationId: String,
-
     val projectId: UUID,
 
     val name: String,
@@ -18,5 +14,4 @@ data class CreateBudgetRequest(
     val description: String?,
 
     val active: Boolean
-
 )

@@ -7,7 +7,7 @@ import type { User, CreateUserRequest } from "../types/user";
 import UserTable from "../components/UserTable";
 import UserForm from "../components/UserForm";
 
-import "./User.css";
+import "../layouts/User.css";
 
 const Users = () => {
   const [users, setUsers] = useState<User[]>([]);

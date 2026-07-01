@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import BudgetTable from "../components/BudgetTable";
-import "./Budget.css";
+import "../layouts/Budget.css";
 
 import { getBudgets, createBudget, deleteBudget } from "../api/budgetApi";
 

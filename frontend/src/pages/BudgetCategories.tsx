@@ -13,7 +13,7 @@ import type {
   CreateBudgetCategoryRequest,
 } from "../types/budgetCategory";
 
-import "./BudgetCategory.css";
+import "../layouts/BudgetCategory.css";
 
 const BudgetCategories = () => {
   const [categories, setCategories] = useState<BudgetCategory[]>([]);

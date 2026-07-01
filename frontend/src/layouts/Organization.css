@@ -2,11 +2,13 @@
    Page
 ============================ */
 
-.project-page {
-  width: 100%;
+.organization-page {
   min-height: 100vh;
-  padding: 40px 50px;
   background: #f4f7fc;
+  padding: 48px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   box-sizing: border-box;
 }
 
@@ -14,18 +16,20 @@
    Header
 ============================ */
 
-.project-header {
-  margin-bottom: 30px;
+.organization-header {
+  width: 100%;
+  max-width: 1000px;
+  margin-bottom: 24px;
 }
 
-.project-header h1 {
+.organization-header h1 {
   margin: 0;
   font-size: 2rem;
   font-weight: 700;
   color: #1f2937;
 }
 
-.project-header p {
+.organization-header p {
   margin-top: 8px;
   color: #6b7280;
   font-size: 15px;
@@ -35,115 +39,123 @@
    Card
 ============================ */
 
-.project-card {
+.organization-card {
   width: 100%;
+  max-width: 1000px;
   background: #ffffff;
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 24px;
   margin-bottom: 24px;
   border: 1px solid #e5e7eb;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  box-sizing: border-box;
 }
 
 /* ============================
    Toolbar
 ============================ */
 
-.project-toolbar {
+.organization-toolbar {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 16px;
 }
 
-.project-input,
-.project-textarea {
-  width: 100%;
+.organization-input {
+  flex: 1;
+  height: 48px;
   border: 1px solid #d1d5db;
   border-radius: 10px;
-  padding: 14px 16px;
+  padding: 0 16px;
   font-size: 15px;
   transition: 0.2s;
-  box-sizing: border-box;
 }
 
-.project-input {
-  height: 48px;
-}
-
-.project-textarea {
-  min-height: 120px;
-  resize: vertical;
-  font-family: inherit;
-}
-
-.project-input:focus,
-.project-textarea:focus {
+.organization-input:focus {
   outline: none;
   border-color: #2563eb;
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
-.project-button {
-  align-self: flex-start;
+.organization-button {
   height: 48px;
   padding: 0 26px;
   border: none;
   border-radius: 10px;
   background: #2563eb;
-  color: white;
+  color: #fff;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.25s;
+  transition: 0.2s;
 }
 
-.project-button:hover {
+.organization-button:hover {
   background: #1d4ed8;
+}
+
+/* ============================
+   Error
+============================ */
+
+.organization-error {
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #dc2626;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 /* ============================
    Table
 ============================ */
 
-.project-card table {
+.organization-card table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.project-card thead {
+.organization-card thead {
   background: #f9fafb;
 }
 
-.project-card th {
+.organization-card th {
   padding: 16px;
   text-align: left;
   font-size: 14px;
+  font-weight: 600;
   color: #374151;
   border-bottom: 2px solid #e5e7eb;
 }
 
-.project-card td {
+.organization-card td {
   padding: 16px;
   border-bottom: 1px solid #eef2f7;
+  color: #111827; /* Black */
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.project-card tbody tr:hover {
+.organization-card tbody tr:hover {
   background: #f8fafc;
 }
 
 /* Delete button */
 
-.project-card button {
+.organization-card td button {
   background: #ef4444;
   color: white;
   border: none;
   border-radius: 8px;
   padding: 8px 14px;
   cursor: pointer;
-  font-size: 14px;
+  transition: 0.2s;
 }
 
-.project-card button:hover {
+.organization-card td button:hover {
   background: #dc2626;
 }
 
@@ -152,21 +164,22 @@
 ============================ */
 
 @media (max-width: 768px) {
-  .project-page {
-    padding: 20px;
+  .organization-page {
+    padding: 24px 16px;
   }
 
-  .project-toolbar {
+  .organization-header,
+  .organization-card {
+    max-width: 100%;
+  }
+
+  .organization-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .organization-input,
+  .organization-button {
     width: 100%;
-  }
-
-  .project-input,
-  .project-textarea,
-  .project-button {
-    width: 100%;
-  }
-
-  .project-button {
-    align-self: stretch;
   }
 }

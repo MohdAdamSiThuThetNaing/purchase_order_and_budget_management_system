@@ -13,7 +13,7 @@ import type {
 
 import PurchaseOrderTable from "../components/PurchaseOrderTable";
 
-import "./PurchaseOrder.css";
+import "../layouts/PurchaseOrder.css";
 
 const PurchaseOrders = () => {
   const [purchaseOrders, setPurchaseOrders] = useState<PurchaseOrder[]>([]);

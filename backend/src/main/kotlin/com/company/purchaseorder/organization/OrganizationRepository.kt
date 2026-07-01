@@ -9,5 +9,9 @@ interface OrganizationRepository : JpaRepository<Organization, UUID> {
 
     fun existsByName(name: String): Boolean
 
+    fun existsBySlug(slug: String): Boolean
+
     fun findByName(name: String): Organization?
+
+    fun findBySlug(slug: String): Organization?
 }

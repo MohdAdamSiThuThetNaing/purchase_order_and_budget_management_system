@@ -6,6 +6,7 @@ data class OrganizationResponse(
 
     val id: UUID?,
 
-    val name: String
+    val name: String,
 
+    val slug: String
 )

@@ -3,6 +3,7 @@ package com.company.purchaseorder.organization
 import com.company.purchaseorder.auth.controller.AuthenticatedUser
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 @Service
@@ -18,6 +19,15 @@ class OrganizationService(
         return user.organizationId
     }
 
+    private fun generateSlug(name: String): String {
+        return name
+            .trim()
+            .lowercase()
+            .replace(Regex("[^a-z0-9\\s-]"), "")
+            .replace(Regex("\\s+"), "-")
+    }
+
+    @Transactional
     fun createOrganization(
         request: CreateOrganizationRequest
     ): OrganizationResponse {
@@ -26,35 +36,39 @@ class OrganizationService(
             throw IllegalArgumentException("Organization already exists.")
         }
 
+        val slug = generateSlug(request.name)
+
+        if (organizationRepository.existsBySlug(slug)) {
+            throw IllegalArgumentException("Organization slug already exists.")
+        }
+
         val organization = Organization(
-            name = request.name
+            name = request.name,
+            slug = slug
         )
 
         val saved = organizationRepository.save(organization)
 
         return OrganizationResponse(
             id = saved.id,
-            name = saved.name
+            name = saved.name,
+            slug = saved.slug
         )
     }
 
+    @Transactional(readOnly = true)
     fun getOrganizations(): List<OrganizationResponse> {
 
-        val organizationId = getOrganizationId()
-
-        val organization = organizationRepository.findById(organizationId)
-            .orElseThrow {
-                RuntimeException("Organization not found.")
-            }
-
-        return listOf(
+        return organizationRepository.findAll().map {
             OrganizationResponse(
-                id = organization.id,
-                name = organization.name
+                id = it.id,
+                name = it.name,
+                slug = it.slug
             )
-        )
+        }
     }
 
+    @Transactional(readOnly = true)
     fun getOrganization(
         id: UUID
     ): OrganizationResponse {
@@ -72,24 +86,29 @@ class OrganizationService(
 
         return OrganizationResponse(
             id = organization.id,
-            name = organization.name
+            name = organization.name,
+            slug = organization.slug
         )
     }
 
-    fun deleteOrganization(
-        id: UUID
-    ) {
+    @Transactional
+    fun deleteOrganization(id: UUID) {
 
-        val organizationId = getOrganizationId()
+        val auth = SecurityContextHolder.getContext().authentication
 
-        if (id != organizationId) {
+        val isAdmin = auth.authorities.any {
+            it.authority == "ROLE_ADMIN"
+        }
+
+        if (!isAdmin && id != getOrganizationId()) {
             throw RuntimeException("Access denied.")
         }
 
-        if (!organizationRepository.existsById(id)) {
-            throw RuntimeException("Organization not found.")
-        }
+        val organization = organizationRepository.findById(id)
+            .orElseThrow {
+                RuntimeException("Organization not found.")
+            }
 
-        organizationRepository.deleteById(id)
+        organizationRepository.delete(organization)
     }
 }

@@ -1,119 +1,368 @@
 # Purchase Order & Budget Management System
 
-A full-stack business application for managing organizations, projects, budgets, purchase orders, and multi-level approval workflows, built as a technical assessment.
+A production-style full-stack application for managing organizations, projects, budgets, purchase orders, and configurable approval workflows.
 
-## Tech Stack
+Built as a technical assessment using Kotlin, Spring Boot, React, PostgreSQL, and Docker.
 
-| Layer    | Technology                                              |
-| -------- | ------------------------------------------------------- |
-| Backend  | Kotlin, Spring Boot 3, Spring Data JPA / Hibernate, JWT |
-| Database | PostgreSQL 16, Flyway (migrations)                      |
-| Frontend | React + TypeScript + Vite                               |
-| Build    | Gradle (backend), npm (frontend)                        |
-| Infra    | Docker, Docker Compose                                  |
+---
 
-## Prerequisites
+# Features
 
-- Docker Desktop (with Docker Compose v2)
-- That's it — Gradle, Node, and PostgreSQL all run inside containers; nothing else needs to be installed locally.
+- JWT Authentication
+- Role-Based Access Control (RBAC)
+- Organization Management
+- Project Management
+- Budget Management
+- Budget Categories
+- Budget Lines
+- Vendor Management
+- Purchase Order Management
+- Multi-level Approval Workflow
+- PostgreSQL + Flyway Migrations
+- Dockerized Full Stack
+- REST API
+- Swagger Documentation
 
-## How to Run the Project
+---
 
-1. Clone the repository and copy the environment file:
+# Tech Stack
 
-   ```bash
-   cp .env.example .env   # or use the provided .env directly
-   ```
+| Layer          | Technology                  |
+| -------------- | --------------------------- |
+| Backend        | Kotlin + Spring Boot 3      |
+| ORM            | Spring Data JPA + Hibernate |
+| Authentication | JWT                         |
+| Database       | PostgreSQL 16               |
+| Migration      | Flyway                      |
+| Frontend       | React + TypeScript + Vite   |
+| Build          | Gradle                      |
+| Infrastructure | Docker + Docker Compose     |
 
-2. Start the full stack:
+---
 
-   ```bash
-   docker-compose up --build
-   ```
+# Project Structure
 
-   This single command will, in order:
+```
+purchase-order
+│
+├── backend
+│   ├── src
+│   ├── Dockerfile
+│   └── build.gradle.kts
+│
+├── frontend
+│   ├── src
+│   ├── Dockerfile
+│   └── package.json
+│
+├── database
+│   └── migrations
+│
+├── docker-compose.yml
+├── .env.example
+└── README.md
+```
 
-   - Start PostgreSQL and wait for it to become healthy
-   - Run Flyway, which applies all database migrations **and** seeds demo data automatically
-   - Start the Spring Boot backend once migrations succeed
-   - Start the React frontend once the backend is healthy
+---
 
-3. Once everything is up:
+# Requirements
 
-   | Service     | URL                          |
-   | ----------- | ---------------------------- |
-   | Frontend    | http://localhost:5173        |
-   | Backend API | http://localhost:8080/api    |
-   | Postgres    | localhost:55432 (see `.env`) |
+Only one requirement is needed.
 
-4. To reset the database completely (wipes all data and re-applies every migration from scratch):
+- Docker Desktop (Docker Compose v2)
 
-   ```bash
-   docker-compose down -v
-   docker-compose up --build
-   ```
+No manual installation of the following is required:
 
-### Demo Accounts
+- Java
+- Gradle
+- Node.js
+- npm
+- PostgreSQL
 
-Seeded automatically via Flyway migration `9_seed_sample_data.sql`. Replace the placeholder password hashes in that file with real bcrypt hashes (e.g. via Spring Security's `BCryptPasswordEncoder`) before relying on these for login:
+Everything runs inside Docker containers.
 
-| Role     | Email              |
-| -------- | ------------------ |
-| Admin    | admin@acme.test    |
-| Manager  | manager@acme.test  |
-| Finance  | finance@acme.test  |
-| Employee | employee@acme.test |
+---
 
-## 🧩 ER Diagram
+# Quick Start
+
+Clone the repository
+
+```bash
+git clone <repository-url>
+
+cd purchase-order
+```
+
+Copy environment variables
+
+```bash
+cp .env.example .env
+```
+
+Start everything
+
+```bash
+docker compose up --build
+```
+
+Docker automatically performs the following:
+
+1. Starts PostgreSQL
+2. Waits until PostgreSQL is healthy
+3. Executes Flyway migrations
+4. Seeds demo data
+5. Starts Spring Boot Backend
+6. Starts React Frontend
+
+No additional setup is required.
+
+---
+
+# Application URLs
+
+| Service    | URL                                         |
+| ---------- | ------------------------------------------- |
+| Frontend   | http://localhost:5173                       |
+| Backend    | http://localhost:8080                       |
+| REST API   | http://localhost:8080/api                   |
+| Swagger UI | http://localhost:8080/swagger-ui/index.html |
+
+---
+
+# Reset Database
+
+Delete all containers and database volume.
+
+```bash
+docker compose down -v
+```
+
+Start again
+
+```bash
+docker compose up --build
+```
+
+Flyway will recreate the schema and seed demo data automatically.
+
+---
+
+# Demo Accounts
+
+Seeded automatically during Flyway migration.
+
+| Role     | Email              | Password |
+| -------- | ------------------ | -------- |
+| Admin    | admin@acme.test    | password |
+| Manager  | manager@acme.test  | password |
+| Finance  | finance@acme.test  | password |
+| Employee | employee@acme.test | password |
+
+---
+
+# ER Diagram
 
 ![ER Diagram](./erd.png)
 
-## Architecture Overview
+---
+
+# Architecture
 
 ```
-┌─────────────┐     REST/JSON      ┌──────────────────┐      JDBC      ┌────────────┐
-│   React     │ ─────────────────▶ │  Spring Boot 3    │ ─────────────▶ │ PostgreSQL │
-│  (Vite, TS) │ ◀───────────────── │  (Kotlin, JPA)    │ ◀───────────── │            │
-└─────────────┘                    └──────────────────┘                 └────────────┘
-                                            │
-                                            ▼
-                                     Flyway migrations
-                                  (schema + seed data)
+                +--------------------+
+                |    React + Vite    |
+                +---------+----------+
+                          |
+                    REST / JSON
+                          |
+                          ▼
+               +----------------------+
+               | Spring Boot Backend  |
+               | Kotlin + JPA + JWT   |
+               +----------+-----------+
+                          |
+                      Hibernate
+                          |
+                          ▼
+                  PostgreSQL Database
+                          ▲
+                          |
+                    Flyway Migration
 ```
 
-- **Multi-tenancy**: every domain table is scoped under `organization_id` (directly or transitively through `project_id`). All queries are filtered by the authenticated user's organization at the service layer to enforce data isolation between organizations.
-- **RBAC**: roles and permissions are stored in the database (`roles`, `permissions`, `role_permissions`, `user_roles`) rather than hardcoded as enums, so organizations can define custom roles beyond the example set (Admin, Manager, Finance, Producer, Employee).
-- **Configurable approval workflow**: `approval_workflows` and `approval_steps` define an ordered, role-gated chain of approval per organization (e.g. Manager → Finance → Producer). `purchase_orders.current_approval_step` tracks where a PO sits in that chain, and every action is recorded immutably in `approval_actions` for audit purposes.
-- **Budget consistency**: `budget_lines.remaining_amount` and `purchase_order_items.total` are PostgreSQL **generated columns**, computed by the database rather than the application layer. This guarantees they can never drift out of sync with their source values, directly satisfying the "budget calculations should always remain consistent" business rule.
-- **Optimistic locking**: `purchase_orders.version` is wired to JPA's `@Version` to prevent lost updates when two users attempt to modify the same PO concurrently.
+---
 
-## Database
+# RBAC
 
-- Schema: 18 normalized tables (see `database/migrations/`), covering organizations, RBAC, projects, vendors, budgets, purchase orders, approval workflow, and notifications.
-- Migrations are managed by Flyway under `database/migrations/`, numbered `1` through `9` in dependency order. Migration `9` seeds demo data and is idempotent (safe to re-run without violating unique constraints).
-- An ER diagram is available at `docs/er-diagram.png` _(add this before submission — see Known Limitations)_.
+The application uses a database-driven RBAC system.
 
-## API Documentation
+Database tables:
 
-Swagger UI is available at `http://localhost:8080/swagger-ui.html` once the backend is running _(confirm path matches your springdoc-openapi configuration)_.
+- users
+- roles
+- permissions
+- user_roles
+- role_permissions
 
-## Design Decisions & Assumptions
+No roles are hardcoded inside the application.
 
-- **Budget structure**: modeled as a flat two-level hierarchy (`budget_categories` → `budget_lines`), matching the assessment's example (Camera → Camera Rental, Lens Rental, Batteries) rather than an arbitrarily-nestable tree, since the spec doesn't call for deeper nesting and a flat model is simpler to reason about and query.
-- **Vendors are normalized**, not free-text fields on the purchase order, since organizations realistically reuse the same vendors across many POs.
-- **Seed data lives inside the Flyway migration chain** (as `9_seed_sample_data.sql`) rather than as a separately-run script, so the entire environment — schema and demo data — is reproducible with a single `docker-compose up --build` and no manual steps. The tradeoff is that seed data becomes part of permanent migration history; an alternative would be a dedicated one-shot Docker service gated on Flyway's completion, which keeps schema and demo data structurally separate at the cost of an extra manual or scripted step.
-- **UUIDs over auto-increment IDs** for all primary keys, to avoid leaking row counts/sequence information and to make IDs safely generatable client-side or across distributed services in future.
+Example roles:
 
-## Known Limitations
+- Admin
+- Manager
+- Finance
+- Producer
+- Employee
 
-- Password hashes in the seed data are placeholders and must be replaced with real bcrypt hashes before login will work against seeded users.
-- _(Update this section honestly before submission — list anything not yet implemented, e.g. real-time notifications, full test coverage, CI/CD, etc.)_
+Permissions can easily be extended by inserting additional database records.
 
-## Bonus Items Implemented
+---
 
-- [x] Docker / Docker Compose (full stack, single-command startup)
-- [x] Optimistic locking (`purchase_orders.version`)
-- [ ] Unit / integration tests
-- [ ] CI/CD pipeline
-- [ ] Audit logging beyond approval actions
-- [ ] Real-time notifications
+# Multi-Tenancy
+
+Every business record belongs to an Organization.
+
+Examples:
+
+- Projects
+- Budgets
+- Vendors
+- Purchase Orders
+
+Service-layer authorization ensures users only access data belonging to their own organization.
+
+---
+
+# Approval Workflow
+
+Approval workflows are configurable.
+
+Example:
+
+```
+Employee
+      ↓
+Manager
+      ↓
+Finance
+      ↓
+Producer
+      ↓
+Approved
+```
+
+Each approval action is recorded in the database for auditing purposes.
+
+---
+
+# Database
+
+The database contains 18 normalized tables covering:
+
+- Authentication
+- Organizations
+- Projects
+- Vendors
+- Budgets
+- Purchase Orders
+- Approval Workflow
+- Notifications
+
+Schema is managed entirely using Flyway.
+
+---
+
+# API Documentation
+
+Swagger UI
+
+```
+http://localhost:8080/swagger-ui/index.html
+```
+
+---
+
+# Design Decisions
+
+## UUID Primary Keys
+
+UUIDs are used instead of auto-increment IDs to support distributed systems and avoid exposing sequential identifiers.
+
+---
+
+## Flyway
+
+Schema creation and seed data are version-controlled using Flyway.
+
+This guarantees reproducible environments.
+
+---
+
+## Docker
+
+The entire application runs through Docker Compose.
+
+The examiner only needs to execute:
+
+```bash
+docker compose up --build
+```
+
+---
+
+## Generated Columns
+
+Budget calculations are implemented using PostgreSQL generated columns to ensure consistency.
+
+---
+
+## Optimistic Locking
+
+Purchase Orders use optimistic locking with JPA `@Version`.
+
+This prevents concurrent update conflicts.
+
+---
+
+# Assumptions
+
+- One authenticated user belongs to one organization.
+- Users may only access data within their organization.
+- Approval workflows are organization-specific.
+- Budget calculations are database-driven.
+
+---
+
+# Future Improvements
+
+- Unit Tests
+- Integration Tests
+- CI/CD
+- Audit Logging
+- Email Notifications
+- WebSocket Notifications
+- File Attachments
+- Purchase Order PDF Export
+
+---
+
+# Bonus Features
+
+- Dockerized full stack
+- JWT Authentication
+- RBAC
+- Flyway Migration
+- Multi-tenancy
+- Optimistic Locking
+- Swagger API
+- Responsive React UI
+
+---
+
+# Author
+
+Adam Si Thu Thet Naing
+
+Senior Software Engineer
+
+Technical Assessment Submission

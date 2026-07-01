@@ -7,7 +7,7 @@ import {
 
 import type { PurchaseOrder } from "../types/purchaseOrder";
 
-import "./ApprovalQueue.css";
+import "../layouts/ApprovalQueue.css";
 
 const ApprovalQueue = () => {
   const [items, setItems] = useState<PurchaseOrder[]>([]);
