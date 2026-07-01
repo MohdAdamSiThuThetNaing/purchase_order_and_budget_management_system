@@ -1,37 +1,71 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getRoles } from "../api/roleApi";
 import type { CreateUserRequest } from "../types/user";
+import type { Role } from "../types/role";
 
 interface Props {
   onSubmit: (data: CreateUserRequest) => Promise<void>;
 }
 
 const UserForm = ({ onSubmit }: Props) => {
+  const [organizationId, setOrganizationId] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [roles, setRoles] = useState("USER");
+
+  const [roles, setRoles] = useState<Role[]>([]);
+  const [selectedRoleId, setSelectedRoleId] = useState("");
+
+  useEffect(() => {
+    const loadRoles = async () => {
+      try {
+        const data = await getRoles();
+        setRoles(data);
+
+        if (data.length > 0) {
+          setSelectedRoleId(data[0].id);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    loadRoles();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     await onSubmit({
+      organizationId,
       email,
       password,
       firstName,
       lastName,
-      roles: roles.split(",").map((r) => r.trim()),
+      roleIds: selectedRoleId ? [selectedRoleId] : [],
     });
 
+    setOrganizationId("");
     setEmail("");
     setPassword("");
     setFirstName("");
     setLastName("");
-    setRoles("USER");
+
+    if (roles.length > 0) {
+      setSelectedRoleId(roles[0].id);
+    }
   };
 
   return (
     <form className="user-form" onSubmit={handleSubmit}>
+      <input
+        className="user-input"
+        placeholder="Organization ID"
+        value={organizationId}
+        onChange={(e) => setOrganizationId(e.target.value)}
+      />
+
       <input
         className="user-input"
         placeholder="Email"
@@ -41,8 +75,8 @@ const UserForm = ({ onSubmit }: Props) => {
 
       <input
         className="user-input"
-        placeholder="Password"
         type="password"
+        placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
@@ -61,12 +95,19 @@ const UserForm = ({ onSubmit }: Props) => {
         onChange={(e) => setLastName(e.target.value)}
       />
 
-      <input
+      <select
         className="user-input"
-        placeholder="Roles (comma separated)"
-        value={roles}
-        onChange={(e) => setRoles(e.target.value)}
-      />
+        value={selectedRoleId}
+        onChange={(e) => setSelectedRoleId(e.target.value)}
+      >
+        <option value="">Select Role</option>
+
+        {roles.map((role) => (
+          <option key={role.id} value={role.id}>
+            {role.name}
+          </option>
+        ))}
+      </select>
 
       <button className="user-button" type="submit">
         Create User

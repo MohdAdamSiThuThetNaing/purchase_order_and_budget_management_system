@@ -126,11 +126,6 @@ export function DashboardPage() {
 
       <div className="dashboard-grid">
         <section className="dashboard-card">
-          <div className="card-header">
-            <h2>Modules</h2>
-            <span>{modules.length}</span>
-          </div>
-
           <div className="module-grid">
             {modules.map((module) => (
               <Link key={module.path} to={module.path} className="module-card">

@@ -6,7 +6,9 @@ interface Props {
 }
 
 const UserTable = ({ users, onDelete }: Props) => {
-  if (!users.length) return <p>No users found.</p>;
+  if (users.length === 0) {
+    return <p>No users found.</p>;
+  }
 
   return (
     <table style={{ width: "100%", borderCollapse: "collapse" }}>
@@ -15,20 +17,28 @@ const UserTable = ({ users, onDelete }: Props) => {
           <th style={th}>Name</th>
           <th style={th}>Email</th>
           <th style={th}>Roles</th>
+          <th style={th}>Status</th>
           <th style={th}>Action</th>
         </tr>
       </thead>
 
       <tbody>
-        {users.map((u) => (
-          <tr key={u.id}>
+        {users.map((user) => (
+          <tr key={user.id}>
             <td style={td}>
-              {u.firstName} {u.lastName}
+              {user.firstName} {user.lastName}
             </td>
-            <td style={td}>{u.email}</td>
-            <td style={td}>{u.roles?.join(", ")}</td>
+
+            <td style={td}>{user.email}</td>
+
+            <td style={td}>{user.roles.map((role) => role.name).join(", ")}</td>
+
+            <td style={td}>{user.isActive ? "Active" : "Inactive"}</td>
+
             <td style={td}>
-              <button onClick={() => onDelete(u.id)}>Delete</button>
+              <button className="user-button" onClick={() => onDelete(user.id)}>
+                Delete
+              </button>
             </td>
           </tr>
         ))}
