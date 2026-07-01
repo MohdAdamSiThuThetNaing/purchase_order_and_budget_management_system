@@ -1,8 +1,9 @@
+package com.company.purchaseorder.budget
+
 import org.springframework.data.jpa.repository.EntityGraph
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import java.util.UUID
-import com.company.purchaseorder.budget.Budget
 
 @Repository
 interface BudgetRepository : JpaRepository<Budget, UUID> {
