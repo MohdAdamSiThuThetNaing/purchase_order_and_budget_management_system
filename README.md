@@ -151,12 +151,25 @@ Flyway will recreate the schema and seed demo data automatically.
 
 Seeded automatically during Flyway migration.
 
-| Role     | Email              | Password |
-| -------- | ------------------ | -------- |
-| Admin    | admin@acme.test    | password |
-| Manager  | manager@acme.test  | password |
-| Finance  | finance@acme.test  | password |
-| Employee | employee@acme.test | password |
+# Demo Accounts
+
+Demo accounts are automatically seeded during the Flyway migration.
+
+Use the following credentials to sign in:
+
+```json
+{
+  "email": "admin@acme.test",
+  "password": "Password123!"
+}
+```
+
+| Role     | Email                                           | Password     |
+| -------- | ----------------------------------------------- | ------------ |
+| Admin    | [admin@acme.test](mailto:admin@acme.test)       | Password123! |
+| Manager  | [manager@acme.test](mailto:manager@acme.test)   | Password123! |
+| Finance  | [finance@acme.test](mailto:finance@acme.test)   | Password123! |
+| Employee | [employee@acme.test](mailto:employee@acme.test) | Password123! |
 
 ---
 
