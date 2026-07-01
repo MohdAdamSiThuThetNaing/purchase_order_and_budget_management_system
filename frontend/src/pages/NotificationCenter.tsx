@@ -117,65 +117,117 @@ const NotificationCenter = () => {
 
   return (
     <div className="notification-page">
-      <h2>Notification Center</h2>
+      <div className="notification-header">
+        <div>
+          <h1>Notification Center</h1>
+          <p>Stay updated with purchase order activities.</p>
+        </div>
+      </div>
 
-      {notifications.length === 0 ? (
-        <p>No notifications found.</p>
-      ) : (
+      {loading && (
+        <div className="notification-loading">Loading notifications...</div>
+      )}
+
+      {!loading && error && (
         <>
-          <table className="notification-table">
-            <thead>
-              <tr>
-                <th>Status</th>
-                <th>Title</th>
-                <th>Message</th>
-                <th>Date</th>
-                <th></th>
-              </tr>
-            </thead>
+          <div className="notification-error">{error}</div>
 
-            <tbody>
-              {notifications.map((notification) => (
-                <tr
-                  key={notification.id}
-                  className={notification.isRead ? "" : "unread"}
+          <button className="notification-button" onClick={loadNotifications}>
+            Retry
+          </button>
+        </>
+      )}
+
+      {!loading && !error && (
+        <>
+          {notifications.length === 0 ? (
+            <div className="notification-empty">
+              <h3>No Notifications</h3>
+              <p>You don't have any notifications yet.</p>
+            </div>
+          ) : (
+            <>
+              <div className="notification-card">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Status</th>
+                      <th>Title</th>
+                      <th>Message</th>
+                      <th>Date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {notifications.map((notification) => (
+                      <tr
+                        key={notification.id}
+                        className={
+                          notification.isRead
+                            ? "notification-read"
+                            : "notification-unread"
+                        }
+                      >
+                        <td className="notification-status">
+                          {getIcon(notification.type)}
+                        </td>
+
+                        <td className="notification-title">
+                          {notification.title}
+                        </td>
+
+                        <td className="notification-message">
+                          {notification.message}
+                        </td>
+
+                        <td className="notification-date">
+                          {new Date(notification.createdAt).toLocaleString()}
+                        </td>
+
+                        <td>
+                          {!notification.isRead ? (
+                            <button
+                              className="notification-button"
+                              onClick={() => markAsRead(notification.id)}
+                            >
+                              Mark Read
+                            </button>
+                          ) : (
+                            <span className="notification-badge read">
+                              Read
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="notification-pagination">
+                <button
+                  className="notification-button"
+                  disabled={page === 0}
+                  onClick={() => setPage((p) => p - 1)}
                 >
-                  <td>{getIcon(notification.type)}</td>
+                  Previous
+                </button>
 
-                  <td>{notification.title}</td>
+                <span>
+                  Page {page + 1} of {totalPages}
+                </span>
 
-                  <td>{notification.message}</td>
-
-                  <td>{new Date(notification.createdAt).toLocaleString()}</td>
-
-                  <td>
-                    {!notification.isRead && (
-                      <button onClick={() => markAsRead(notification.id)}>
-                        Mark Read
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          <div className="notification-pagination">
-            <button disabled={page === 0} onClick={() => setPage((p) => p - 1)}>
-              Previous
-            </button>
-
-            <span>
-              Page {page + 1} of {totalPages}
-            </span>
-
-            <button
-              disabled={page >= totalPages - 1}
-              onClick={() => setPage((p) => p + 1)}
-            >
-              Next
-            </button>
-          </div>
+                <button
+                  className="notification-button"
+                  disabled={page >= totalPages - 1}
+                  onClick={() => setPage((p) => p + 1)}
+                >
+                  Next
+                </button>
+              </div>
+            </>
+          )}
         </>
       )}
     </div>

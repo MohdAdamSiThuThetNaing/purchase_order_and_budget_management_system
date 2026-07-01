@@ -12,7 +12,7 @@ import java.math.BigDecimal
 import java.time.OffsetDateTime
 import java.util.UUID
 import com.company.purchaseorder.auth.repository.UserRepository
-import com.company.purchaseorder.notification.NotificationService
+import com.company.purchaseorder.notification.service.NotificationService
 import com.company.purchaseorder.notification.NotificationType
 
 

@@ -3,6 +3,8 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
+import MainLayout from "./layouts/MainLayout";
+
 import { LoginPage } from "./pages/LoginPage";
 import { DashboardPage } from "./pages/DashboardPage";
 
@@ -28,130 +30,49 @@ export default function App() {
           <Route path="/login" element={<LoginPage />} />
 
           <Route
-            path="/dashboard"
             element={
               <ProtectedRoute>
-                <DashboardPage />
+                <MainLayout />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route path="/dashboard" element={<DashboardPage />} />
 
-          <Route
-            path="/organizations"
-            element={
-              <ProtectedRoute>
-                <Organizations />
-              </ProtectedRoute>
-            }
-          />
+            <Route path="/organizations" element={<Organizations />} />
 
-          <Route
-            path="/projects"
-            element={
-              <ProtectedRoute>
-                <Projects />
-              </ProtectedRoute>
-            }
-          />
+            <Route path="/projects" element={<Projects />} />
 
-          <Route
-            path="/budgets"
-            element={
-              <ProtectedRoute>
-                <Budgets />
-              </ProtectedRoute>
-            }
-          />
+            <Route path="/budgets" element={<Budgets />} />
 
-          <Route
-            path="/purchase-orders"
-            element={
-              <ProtectedRoute>
-                <PurchaseOrders />
-              </ProtectedRoute>
-            }
-          />
+            <Route path="/purchase-orders" element={<PurchaseOrders />} />
 
-          <Route
-            path="/purchase-orders/new"
-            element={
-              <ProtectedRoute>
-                <PurchaseOrderForm />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/purchase-orders/new"
+              element={<PurchaseOrderForm />}
+            />
 
-          <Route
-            path="/purchase-orders/:id/edit"
-            element={
-              <ProtectedRoute>
-                <PurchaseOrderForm />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/purchase-orders/:id/edit"
+              element={<PurchaseOrderForm />}
+            />
 
-          <Route
-            path="/purchase-orders/:id"
-            element={
-              <ProtectedRoute>
-                <PurchaseOrderDetails />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/purchase-orders/:id"
+              element={<PurchaseOrderDetails />}
+            />
 
-          <Route
-            path="/users"
-            element={
-              <ProtectedRoute>
-                <Users />
-              </ProtectedRoute>
-            }
-          />
+            <Route path="/users" element={<Users />} />
 
-          <Route
-            path="/budget-categories"
-            element={
-              <ProtectedRoute>
-                <BudgetCategories />
-              </ProtectedRoute>
-            }
-          />
+            <Route path="/budget-categories" element={<BudgetCategories />} />
 
-          <Route
-            path="/budget-lines"
-            element={
-              <ProtectedRoute>
-                <BudgetLines />
-              </ProtectedRoute>
-            }
-          />
+            <Route path="/budget-lines" element={<BudgetLines />} />
 
-          <Route
-            path="/budget-report"
-            element={
-              <ProtectedRoute>
-                <BudgetReport />
-              </ProtectedRoute>
-            }
-          />
+            <Route path="/budget-report" element={<BudgetReport />} />
 
-          <Route
-            path="/approval-queue"
-            element={
-              <ProtectedRoute>
-                <ApprovalQueue />
-              </ProtectedRoute>
-            }
-          />
+            <Route path="/approval-queue" element={<ApprovalQueue />} />
 
-          <Route
-            path="/notifications"
-            element={
-              <ProtectedRoute>
-                <NotificationCenter />
-              </ProtectedRoute>
-            }
-          />
+            <Route path="/notifications" element={<NotificationCenter />} />
+          </Route>
 
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
 

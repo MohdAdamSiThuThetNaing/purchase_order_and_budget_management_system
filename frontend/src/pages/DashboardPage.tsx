@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { LogoutButton } from "../components/LogoutButton";
-import NotificationBell from "../components/NotificationBell";
 
 import "../layouts/DashboardPage.css";
 
@@ -15,7 +13,12 @@ export function DashboardPage() {
       icon: "🏢",
       description: "Manage org settings",
     },
-    { title: "Projects", path: "/projects", icon: "📁", description: "Projects" },
+    {
+      title: "Projects",
+      path: "/projects",
+      icon: "📁",
+      description: "Projects",
+    },
     { title: "Budgets", path: "/budgets", icon: "💰", description: "Budgets" },
     {
       title: "Budget Categories",
@@ -53,7 +56,12 @@ export function DashboardPage() {
       icon: "🔔",
       description: "Your updates",
     },
-    { title: "Users", path: "/users", icon: "👥", description: "Access control" },
+    {
+      title: "Users",
+      path: "/users",
+      icon: "👥",
+      description: "Access control",
+    },
   ];
 
   const quickActions = [
@@ -98,20 +106,11 @@ export function DashboardPage() {
                 </div>
               </div>
             </div>
-
-            <div className="dashboard-actions">
-              <NotificationBell />
-              <LogoutButton />
-            </div>
           </div>
 
           <div className="quick-actions">
             {quickActions.map((action) => (
-              <Link
-                key={action.path}
-                to={action.path}
-                className="quick-action"
-              >
+              <Link key={action.path} to={action.path} className="quick-action">
                 <span className="quick-action-icon">{action.icon}</span>
                 <div className="quick-action-copy">
                   <span className="quick-action-title">{action.title}</span>

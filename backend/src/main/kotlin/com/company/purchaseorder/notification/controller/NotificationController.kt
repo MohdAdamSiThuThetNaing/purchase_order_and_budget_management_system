@@ -2,16 +2,14 @@ package com.company.purchaseorder.notification.controller
 
 import com.company.purchaseorder.auth.controller.AuthenticatedUser
 import com.company.purchaseorder.notification.dto.NotificationResponse
-import com.company.purchaseorder.notification.NotificationService
+import com.company.purchaseorder.notification.service.NotificationService
 import org.springframework.data.domain.Page
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import java.util.UUID
 
-
-
 @RestController
-@RequestMapping("/notifications")
+@RequestMapping("/api/notifications")
 class NotificationController(
 
     private val notificationService: NotificationService

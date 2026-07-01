@@ -6,7 +6,7 @@
   width: 100%;
   min-height: 100vh;
   padding: 40px 50px;
-  background: #f4f7fc;
+  background: #f5f7fb;
   box-sizing: border-box;
 }
 
@@ -15,18 +15,22 @@
 ============================ */
 
 .notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 30px;
 }
 
 .notification-header h1 {
   margin: 0;
-  font-size: 2rem;
+  font-size: 32px;
   font-weight: 700;
-  color: #1f2937;
+  color: #111827;
+  letter-spacing: -0.5px;
 }
 
 .notification-header p {
-  margin-top: 8px;
+  margin-top: 6px;
   color: #6b7280;
   font-size: 15px;
 }
@@ -38,11 +42,17 @@
 .notification-card {
   width: 100%;
   background: #ffffff;
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 24px;
   margin-bottom: 24px;
   border: 1px solid #e5e7eb;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  transition: all 0.25s ease;
+}
+
+.notification-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
 }
 
 /* ============================
@@ -55,28 +65,33 @@
 }
 
 .notification-card thead {
-  background: #f9fafb;
+  background: #f8fafc;
 }
 
 .notification-card th {
-  padding: 16px;
+  padding: 18px;
   text-align: left;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   color: #374151;
   border-bottom: 2px solid #e5e7eb;
+  white-space: nowrap;
 }
 
 .notification-card td {
-  padding: 16px;
-  border-bottom: 1px solid #eef2f7;
+  padding: 18px;
+  border-bottom: 1px solid #edf2f7;
   font-size: 14px;
   color: #111827;
   vertical-align: middle;
 }
 
+.notification-card tbody tr {
+  transition: all 0.2s ease;
+}
+
 .notification-card tbody tr:hover {
-  background: #f8fafc;
+  background: #f8fbff;
 }
 
 /* ============================
@@ -84,12 +99,14 @@
 ============================ */
 
 .notification-unread {
-  background: #eff6ff;
+  background: #eef6ff;
   font-weight: 600;
+  border-left: 4px solid #2563eb;
 }
 
 .notification-read {
   background: #ffffff;
+  color: #6b7280;
 }
 
 /* ============================
@@ -97,9 +114,44 @@
 ============================ */
 
 .notification-status {
-  font-size: 22px;
+  width: 60px;
   text-align: center;
-  width: 50px;
+  font-size: 24px;
+}
+
+/* ============================
+   Title & Message
+============================ */
+
+.notification-title {
+  font-weight: 600;
+  color: #111827;
+}
+
+.notification-message {
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+/* ============================
+   Date
+============================ */
+
+.notification-date {
+  white-space: nowrap;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* ============================
+   Status Icon
+============================ */
+
+.notification-status {
+  width: 60px;
+  text-align: center;
+  font-size: 24px;
+  vertical-align: middle;
 }
 
 /* ============================
@@ -107,24 +159,37 @@
 ============================ */
 
 .notification-button {
-  background: #2563eb;
-  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  min-width: 110px;
   border: none;
   border-radius: 8px;
-  padding: 8px 14px;
-  cursor: pointer;
+  background: #2563eb;
+  color: #ffffff;
   font-size: 14px;
-  font-weight: 500;
-  transition: 0.2s;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 
 .notification-button:hover {
   background: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+}
+
+.notification-button:active {
+  transform: scale(0.98);
 }
 
 .notification-button:disabled {
   background: #d1d5db;
+  color: #6b7280;
   cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 
 /* ============================
@@ -132,16 +197,21 @@
 ============================ */
 
 .notification-pagination {
-  margin-top: 24px;
+  margin-top: 32px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
 }
 
 .notification-pagination span {
+  font-size: 14px;
+  font-weight: 600;
   color: #4b5563;
-  font-weight: 500;
+}
+
+.notification-pagination button {
+  min-width: 110px;
 }
 
 /* ============================
@@ -149,14 +219,15 @@
 ============================ */
 
 .notification-error {
-  margin-bottom: 20px;
-  padding: 14px 18px;
-  border-radius: 10px;
-  background: #fef2f2;
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  border-radius: 12px;
   border: 1px solid #fecaca;
+  background: #fff1f2;
   color: #dc2626;
   font-size: 14px;
   font-weight: 500;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.08);
 }
 
 /* ============================
@@ -164,10 +235,21 @@
 ============================ */
 
 .notification-empty {
-  padding: 40px;
+  padding: 70px 30px;
   text-align: center;
   color: #6b7280;
+}
+
+.notification-empty h3 {
+  margin-bottom: 12px;
+  font-size: 22px;
+  color: #374151;
+}
+
+.notification-empty p {
+  margin: 0;
   font-size: 15px;
+  line-height: 1.6;
 }
 
 /* ============================
@@ -175,10 +257,11 @@
 ============================ */
 
 .notification-loading {
-  padding: 40px;
+  padding: 70px;
   text-align: center;
   color: #6b7280;
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 /* ============================
@@ -190,15 +273,41 @@
     padding: 20px;
   }
 
+  .notification-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .notification-header h1 {
+    font-size: 28px;
+  }
+
   .notification-card {
     overflow-x: auto;
+    padding: 18px;
   }
 
   .notification-card table {
-    min-width: 750px;
+    min-width: 760px;
+  }
+
+  .notification-card th,
+  .notification-card td {
+    padding: 14px;
   }
 
   .notification-pagination {
     flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .notification-pagination button {
+    width: 100%;
+    max-width: 180px;
+  }
+
+  .notification-button {
+    width: 100%;
   }
 }

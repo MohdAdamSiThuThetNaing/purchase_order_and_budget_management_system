@@ -5,12 +5,14 @@ import com.company.purchaseorder.notification.NotificationType
 import com.company.purchaseorder.notification.entity.Notification
 import com.company.purchaseorder.notification.repository.NotificationRepository
 import org.springframework.data.domain.PageRequest
+import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Service
 import java.util.UUID
 
 @Service
 class NotificationService(
-    private val notificationRepository: NotificationRepository
+    private val notificationRepository: NotificationRepository,
+    private val messagingTemplate: SimpMessagingTemplate
 ) {
 
     fun create(
@@ -19,12 +21,26 @@ class NotificationService(
         title: String,
         message: String
     ) {
-        notificationRepository.save(
+
+        val notification = notificationRepository.save(
             Notification(
                 user = user,
                 type = type,
                 title = title,
                 message = message
+            )
+        )
+
+        messagingTemplate.convertAndSendToUser(
+            user.id.toString(),
+            "/queue/notifications",
+            NotificationSocketResponse(
+                id = notification.id,
+                title = notification.title,
+                message = notification.message,
+                type = notification.type,
+                isRead = notification.isRead,
+                createdAt = notification.createdAt
             )
         )
     }
