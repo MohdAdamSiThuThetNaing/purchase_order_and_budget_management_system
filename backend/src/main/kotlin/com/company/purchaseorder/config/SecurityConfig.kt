@@ -45,6 +45,7 @@ class SecurityConfig {
             allowedOriginPatterns = listOf(
                 "http://localhost:*",
                 "http://127.0.0.1:*",
+                "https://purchase-order-and-budget-managemen.vercel.app",
                 "http://0.0.0.0:*"
             )
             allowedMethods = listOf("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
