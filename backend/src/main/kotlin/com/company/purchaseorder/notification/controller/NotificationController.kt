@@ -1,3 +1,5 @@
+package com.company.purchaseorder.notification.controller
+
 import com.company.purchaseorder.auth.controller.AuthenticatedUser
 import com.company.purchaseorder.notification.dto.NotificationResponse
 import com.company.purchaseorder.notification.NotificationService

@@ -1,7 +1,9 @@
-package com.company.purchaseorder.notification
+package com.company.purchaseorder.notification.service
 
 import com.company.purchaseorder.auth.entity.User
+import com.company.purchaseorder.notification.NotificationType
 import com.company.purchaseorder.notification.entity.Notification
+import com.company.purchaseorder.notification.repository.NotificationRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import java.util.UUID

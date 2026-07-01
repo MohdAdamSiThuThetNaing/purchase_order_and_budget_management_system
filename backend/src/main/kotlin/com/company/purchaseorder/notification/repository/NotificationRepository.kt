@@ -1,4 +1,4 @@
-package com.company.purchaseorder.notification
+package com.company.purchaseorder.notification.repository
 
 import com.company.purchaseorder.notification.entity.Notification
 import org.springframework.data.domain.Page

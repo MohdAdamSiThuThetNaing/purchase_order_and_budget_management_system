@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import "../layouts/NotificationCenter.css";
+
+import {
+  getNotifications,
+  markNotificationAsRead,
+} from "../api/notificationApi";
 
 type NotificationType =
   | "PO_SUBMITTED"
@@ -17,13 +21,6 @@ interface Notification {
   createdAt: string;
 }
 
-interface PageResponse<T> {
-  content: T[];
-  totalPages: number;
-  totalElements: number;
-  number: number;
-}
-
 const NotificationCenter = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [page, setPage] = useState(0);
@@ -37,25 +34,10 @@ const NotificationCenter = () => {
       setLoading(true);
       setError("");
 
-      const { data } = await axios.get<
-        PageResponse<Notification> | Notification[]
-      >(`/notifications?page=${page}&size=10`);
+      const data = await getNotifications(page, 10);
 
-      console.log("Notification Response:", data);
-
-      // Backend returns Spring Page<>
-      if (!Array.isArray(data) && "content" in data) {
-        setNotifications(data.content ?? []);
-        setTotalPages(data.totalPages ?? 1);
-      }
-      // Backend returns plain array
-      else if (Array.isArray(data)) {
-        setNotifications(data);
-        setTotalPages(1);
-      } else {
-        setNotifications([]);
-        setTotalPages(1);
-      }
+      setNotifications(data.content ?? []);
+      setTotalPages(data.totalPages ?? 1);
     } catch (err) {
       console.error(err);
       setNotifications([]);
@@ -67,37 +49,35 @@ const NotificationCenter = () => {
   };
 
   useEffect(() => {
-    const fetchNotifications = async () => {
-      setLoading(true);
-
+    const fetchData = async () => {
       try {
-        const { data } = await axios.get<PageResponse<Notification>>(
-          `/notifications?page=${page}&size=10`
-        );
+        const data = await getNotifications(page, 10);
 
         setNotifications(data.content ?? []);
         setTotalPages(data.totalPages ?? 1);
         setError("");
       } catch (err) {
         console.error(err);
-        setNotifications([]);
         setError("Unable to load notifications.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchNotifications();
+    fetchData();
   }, [page]);
 
   const markAsRead = async (id: string) => {
     try {
-      await axios.patch(`/notifications/${id}/read`);
+      await markNotificationAsRead(id);
 
       setNotifications((prev) =>
         prev.map((notification) =>
           notification.id === id
-            ? { ...notification, isRead: true }
+            ? {
+                ...notification,
+                isRead: true,
+              }
             : notification
         )
       );
@@ -122,12 +102,12 @@ const NotificationCenter = () => {
   };
 
   if (loading) {
-    return <div style={{ padding: 24 }}>Loading notifications...</div>;
+    return <div className="notification-page">Loading notifications...</div>;
   }
 
   if (error) {
     return (
-      <div style={{ padding: 24 }}>
+      <div className="notification-page">
         <p>{error}</p>
 
         <button onClick={loadNotifications}>Retry</button>
@@ -136,27 +116,21 @@ const NotificationCenter = () => {
   }
 
   return (
-    <div style={{ padding: 24 }}>
+    <div className="notification-page">
       <h2>Notification Center</h2>
 
       {notifications.length === 0 ? (
         <p>No notifications found.</p>
       ) : (
         <>
-          <table
-            style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              marginTop: 20,
-            }}
-          >
+          <table className="notification-table">
             <thead>
               <tr>
                 <th>Status</th>
                 <th>Title</th>
                 <th>Message</th>
                 <th>Date</th>
-                <th>Action</th>
+                <th></th>
               </tr>
             </thead>
 
@@ -164,10 +138,7 @@ const NotificationCenter = () => {
               {notifications.map((notification) => (
                 <tr
                   key={notification.id}
-                  style={{
-                    backgroundColor: notification.isRead ? "#fff" : "#eef6ff",
-                    fontWeight: notification.isRead ? "normal" : "bold",
-                  }}
+                  className={notification.isRead ? "" : "unread"}
                 >
                   <td>{getIcon(notification.type)}</td>
 
@@ -189,15 +160,7 @@ const NotificationCenter = () => {
             </tbody>
           </table>
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 16,
-              marginTop: 20,
-            }}
-          >
+          <div className="notification-pagination">
             <button disabled={page === 0} onClick={() => setPage((p) => p - 1)}>
               Previous
             </button>
