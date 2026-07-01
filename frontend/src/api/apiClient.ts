@@ -8,7 +8,7 @@ export const API_BASE_URL =
 
 if (!API_BASE_URL) {
   throw new Error(
-    "VITE_API_BASE_URL is not configured. Please set it in your environment variables."
+    "VITE_API_URL is not configured. Please set it in your environment variables."
   );
 }
 

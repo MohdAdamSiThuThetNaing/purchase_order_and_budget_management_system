@@ -1,9 +1,6 @@
 import axios from "axios";
 import type { AuthResponse, LoginRequest } from "../types/auth";
-
-export const API_BASE_URL =
-  import.meta.env.VITE_API_URL ||
-  (import.meta.env.DEV ? "http://localhost:8080/api" : "");
+import { API_BASE_URL } from "./apiClient";
 
 const authClient = axios.create({
   baseURL: API_BASE_URL,
