@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   getPurchaseOrders,
   approvePurchaseOrder,
@@ -81,49 +82,77 @@ const ApprovalQueue = () => {
 
   if (error)
     return (
-      <div>
-        <p>{error}</p>
-        <button onClick={loadQueue}>Retry</button>
+      <div className="approval-page">
+        <div className="approval-header">
+          <h1>Approval Queue</h1>
+          <p>Review submitted purchase orders</p>
+        </div>
+        <div className="approval-card">
+          <p className="error">{error}</p>
+          <button className="approve-btn" onClick={loadQueue}>
+            Retry
+          </button>
+        </div>
       </div>
     );
 
   return (
     <div className="approval-page">
-      <h1>Approval Queue</h1>
-      <p>Review submitted purchase orders</p>
+      <div className="approval-header">
+        <h1>Approval Queue</h1>
+        <p>Review submitted purchase orders</p>
+      </div>
 
       {items.length === 0 ? (
-        <p>No pending approvals.</p>
+        <div className="approval-card">
+          <p>No pending approvals.</p>
+        </div>
       ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>PO Number</th>
-              <th>Project</th>
-              <th>Vendor</th>
-              <th>Items</th>
-              <th>Amount</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+        <div className="approval-card">
+          <div className="table-container">
+            <table className="approval-table">
+              <thead>
+                <tr>
+                  <th>PO Number</th>
+                  <th>Project</th>
+                  <th>Vendor</th>
+                  <th>Items</th>
+                  <th>Amount</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
 
-          <tbody>
-            {items.map((po) => (
-              <tr key={po.id}>
-                <td>{po.poNumber}</td>
-                <td>{projectName(po.projectId)}</td>
-                <td>{vendorName(po.vendorId)}</td>
-                <td>{po.items?.length ?? 0}</td>
-                <td>{formatCurrency(po.totalAmount)}</td>
+              <tbody>
+                {items.map((po) => (
+                  <tr key={po.id}>
+                    <td>
+                      <Link to={`/purchase-orders/${po.id}`}>{po.poNumber}</Link>
+                    </td>
+                    <td>{projectName(po.projectId)}</td>
+                    <td>{vendorName(po.vendorId)}</td>
+                    <td>{po.items?.length ?? 0}</td>
+                    <td>{formatCurrency(po.totalAmount)}</td>
 
-                <td>
-                  <button onClick={() => handleApprove(po)}>Approve</button>
-                  <button onClick={() => handleReject(po)}>Reject</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                    <td>
+                      <button
+                        className="approve-btn"
+                        onClick={() => handleApprove(po)}
+                      >
+                        Approve
+                      </button>
+                      <button
+                        className="reject-btn"
+                        onClick={() => handleReject(po)}
+                      >
+                        Reject
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       )}
     </div>
   );
