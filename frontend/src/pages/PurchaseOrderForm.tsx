@@ -114,9 +114,7 @@ const PurchaseOrderForm = () => {
     value: string | number
   ) => {
     setItems((prev) =>
-      prev.map((item, i) =>
-        i === index ? { ...item, [field]: value } : item
-      )
+      prev.map((item, i) => (i === index ? { ...item, [field]: value } : item))
     );
   };
 
@@ -347,14 +345,16 @@ const PurchaseOrderForm = () => {
         </div>
       </div>
 
-      <div className="purchase-order-form-actions">
-        <button
-          className="purchase-order-button"
-          onClick={handleSave}
-          disabled={saving}
-        >
-          {saving ? "Saving..." : "Save Draft"}
-        </button>
+      <div className="purchase-order-card">
+        <div className="purchase-order-form-actions">
+          <button
+            className="purchase-order-button"
+            onClick={handleSave}
+            disabled={saving}
+          >
+            {saving ? "Saving..." : "Save Draft"}
+          </button>
+        </div>
       </div>
     </div>
   );

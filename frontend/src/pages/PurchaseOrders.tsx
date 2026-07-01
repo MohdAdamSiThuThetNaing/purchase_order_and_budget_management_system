@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
 import {
   getPurchaseOrders,
   deletePurchaseOrder,
@@ -44,29 +44,35 @@ const PurchaseOrders = () => {
   const vendorName = (vendorId: string) =>
     vendors.find((v) => v.id === vendorId)?.name ?? vendorId;
 
-  const load = async () => {
+  const load = useCallback(async (showLoading = false) => {
     try {
-      setLoading(true);
+      if (showLoading) {
+        setLoading(true);
+      }
+
       setError("");
+
       const [orderData, vendorData] = await Promise.all([
         getPurchaseOrders(),
         getVendors(),
       ]);
+
       setOrders(orderData);
       setVendors(vendorData);
     } catch (err: unknown) {
       const message =
         (err as { response?: { data?: { message?: string } } })?.response?.data
           ?.message ?? "Failed to load purchase orders.";
+
       setError(message);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    load();
-  }, []);
+    void load();
+  }, [load]);
 
   const handleDelete = async (id: string) => {
     if (!window.confirm("Delete this draft purchase order?")) return;
@@ -152,7 +158,9 @@ const PurchaseOrders = () => {
                   <td>{vendorName(order.vendorId)}</td>
                   <td>
                     <span
-                      className={`purchase-order-status ${statusClass(order.status)}`}
+                      className={`purchase-order-status ${statusClass(
+                        order.status
+                      )}`}
                     >
                       {order.status}
                     </span>

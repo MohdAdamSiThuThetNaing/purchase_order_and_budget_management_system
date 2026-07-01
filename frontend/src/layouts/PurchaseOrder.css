@@ -1,89 +1,199 @@
+/* ============================
+   Page
+============================ */
+
 .purchase-order-page {
   min-height: 100vh;
-  padding: 40px;
-  background: #f5f7fb;
+  background: #f4f7fc;
+  padding: 40px 32px;
+  box-sizing: border-box;
 }
 
+/* ============================
+   Header
+============================ */
+
 .purchase-order-header {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto 28px;
+
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
+  align-items: center;
+  gap: 24px;
+}
+
+.purchase-order-header > div {
+  flex: 1;
 }
 
 .purchase-order-header h1 {
   margin: 0;
-  font-size: 28px;
+  font-size: 2rem;
   font-weight: 700;
-  color: #111827;
+  color: #1f2937;
 }
 
 .purchase-order-header p {
+  margin: 8px 0 0;
   color: #6b7280;
-  margin-top: 6px;
+  font-size: 15px;
+  line-height: 1.5;
 }
 
+/* ============================
+   Card
+============================ */
+
 .purchase-order-card {
-  background: white;
-  border-radius: 14px;
-  padding: 20px;
-  margin-top: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto 24px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+
+  padding: 28px;
+
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+
+  box-sizing: border-box;
 }
 
 .purchase-order-card h3 {
-  margin: 0 0 16px;
+  margin: 0 0 20px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f2937;
 }
+
+/* ============================
+   Toolbar
+============================ */
 
 .purchase-order-toolbar {
   display: flex;
-  gap: 12px;
   flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
 }
+
+/* ============================
+   Form
+============================ */
 
 .purchase-order-form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
 }
 
 .purchase-order-form-grid label {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  font-weight: 500;
+  gap: 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+
   color: #374151;
 }
 
+/* ============================
+   Inputs
+============================ */
+
 .purchase-order-input,
 .purchase-order-select {
-  padding: 12px;
+  width: 100%;
+  height: 48px;
+
+  padding: 0 16px;
+
   border: 1px solid #d1d5db;
   border-radius: 10px;
-  min-width: 180px;
-  font-size: 14px;
+
+  background: #ffffff;
+
+  color: #111827;
+  font-size: 15px;
+
+  transition: all 0.2s ease;
+
+  box-sizing: border-box;
+}
+
+.purchase-order-input:focus,
+.purchase-order-select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
 .purchase-order-input.narrow {
-  min-width: 100px;
+  max-width: 140px;
 }
+
+/* ============================
+   Select
+============================ */
+
+.purchase-order-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  cursor: pointer;
+
+  padding-right: 42px;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%236b7280' stroke-width='2' viewBox='0 0 20 20'%3E%3Cpolyline points='6 8 10 12 14 8'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 18px;
+}
+
+.purchase-order-select:hover {
+  border-color: #93c5fd;
+}
+
+/* ============================
+   Main Button
+============================ */
 
 .purchase-order-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 18px;
-  background: #2563eb;
-  color: white;
+
+  height: 48px;
+  min-width: 220px;
+
+  padding: 0 24px;
+
   border: none;
   border-radius: 10px;
-  cursor: pointer;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 600;
+
   text-decoration: none;
-  font-size: 14px;
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+  flex-shrink: 0;
 }
 
 .purchase-order-button:hover {
   background: #1d4ed8;
+  transform: translateY(-1px);
 }
 
 .purchase-order-button.secondary {
@@ -99,85 +209,82 @@
   cursor: not-allowed;
 }
 
+/* ============================
+   Table
+============================ */
+
+.purchase-order-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
 .purchase-order-table {
   width: 100%;
+  min-width: 1200px;
   border-collapse: collapse;
 }
 
-.purchase-order-table th {
-  text-align: left;
-  padding: 14px;
+.purchase-order-table thead {
   background: #f9fafb;
+}
+
+.purchase-order-table th {
+  padding: 18px 20px;
+
+  text-align: left;
+
+  font-size: 14px;
+  font-weight: 700;
+
   color: #374151;
+
+  border-bottom: 2px solid #e5e7eb;
+
+  white-space: nowrap;
 }
 
 .purchase-order-table td {
-  padding: 14px;
-  border-top: 1px solid #e5e7eb;
-  vertical-align: top;
+  padding: 18px 20px;
+
+  border-bottom: 1px solid #eef2f7;
+
+  color: #111827;
+  font-size: 14px;
+
+  vertical-align: middle;
 }
 
-.purchase-order-table tr:hover {
-  background: #f9fafb;
+.purchase-order-table tbody tr:hover {
+  background: #f8fafc;
 }
 
 .purchase-order-table a {
   color: #2563eb;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .purchase-order-table a:hover {
   text-decoration: underline;
 }
 
-.purchase-order-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.purchase-order-actions button,
-.purchase-order-form-actions button,
-.po-header-actions button {
-  border: none;
-  padding: 6px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-.btn-view {
-  background: #3b82f6;
-  color: white;
-}
-
-.btn-edit {
-  background: #6366f1;
-  color: white;
-}
-
-.btn-submit {
-  background: #059669;
-  color: white;
-}
-
-.btn-cancel {
-  background: #f59e0b;
-  color: white;
-}
-
-.btn-delete {
-  background: #ef4444;
-  color: white;
-}
+/* ============================
+   Status
+============================ */
 
 .purchase-order-status {
-  display: inline-block;
-  padding: 4px 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 90px;
+
+  padding: 6px 14px;
+
   border-radius: 999px;
+
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .status-draft {
@@ -205,11 +312,89 @@
   color: #6b7280;
 }
 
+/* ============================
+   Action Buttons
+============================ */
+
+.purchase-order-actions,
+.purchase-order-form-actions,
+.po-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.purchase-order-actions button,
+.purchase-order-form-actions button,
+.po-header-actions button {
+  border: none;
+  border-radius: 8px;
+
+  padding: 8px 14px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.btn-view {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-view:hover {
+  background: #2563eb;
+}
+
+.btn-edit {
+  background: #6366f1;
+  color: white;
+}
+
+.btn-edit:hover {
+  background: #4f46e5;
+}
+
+.btn-submit {
+  background: #10b981;
+  color: white;
+}
+
+.btn-submit:hover {
+  background: #059669;
+}
+
+.btn-cancel {
+  background: #f59e0b;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background: #d97706;
+}
+
+.btn-delete {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-delete:hover {
+  background: #dc2626;
+}
+
+/* ============================
+   Items
+============================ */
+
 .purchase-order-items-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+
+  margin-bottom: 18px;
 }
 
 .purchase-order-items-header h3 {
@@ -217,22 +402,93 @@
 }
 
 .purchase-order-total {
-  margin-top: 16px;
+  margin-top: 24px;
+
   text-align: right;
-  font-size: 18px;
+
+  font-size: 22px;
+  font-weight: 700;
+
+  color: #111827;
 }
 
 .purchase-order-form-actions {
-  margin-top: 20px;
-  display: flex;
-  gap: 12px;
+  margin-top: 24px;
 }
+
+/* ============================
+   Error
+============================ */
 
 .purchase-order-error {
+  width: 100%;
+  max-width: 1500px;
+
+  margin: 0 auto 20px;
+
+  padding: 14px 18px;
+
+  border-radius: 10px;
+
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+
   color: #dc2626;
-  margin-top: 16px;
+  font-size: 14px;
+  font-weight: 600;
+
+  box-sizing: border-box;
 }
 
+/* ============================
+   Empty
+============================ */
+
 .purchase-order-empty {
+  padding: 48px;
+  text-align: center;
+
   color: #6b7280;
+  font-size: 15px;
+}
+
+/* ============================
+   Responsive
+============================ */
+
+@media (max-width: 992px) {
+  .purchase-order-page {
+    padding: 24px 16px;
+  }
+
+  .purchase-order-header {
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 100%;
+  }
+
+  .purchase-order-card,
+  .purchase-order-error {
+    max-width: 100%;
+  }
+
+  .purchase-order-button {
+    width: 100%;
+  }
+
+  .purchase-order-toolbar,
+  .purchase-order-actions,
+  .purchase-order-form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .purchase-order-input,
+  .purchase-order-select {
+    width: 100%;
+  }
+
+  .purchase-order-table {
+    min-width: 1000px;
+  }
 }
