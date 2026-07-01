@@ -1,4 +1,4 @@
-import axios from "axios";
+import { apiClient } from "./apiClient";
 
 export interface CreateBudgetCategoryRequest {
   name: string;
@@ -14,17 +14,22 @@ export interface BudgetCategory {
 }
 
 export const getBudgetCategories = async (): Promise<BudgetCategory[]> => {
-  const response = await axios.get("/budget-categories");
-  return response.data;
+  const { data } = await apiClient.get<BudgetCategory[]>("/budget-categories");
+
+  return data;
 };
 
 export const createBudgetCategory = async (
   payload: CreateBudgetCategoryRequest
 ): Promise<BudgetCategory> => {
-  const response = await axios.post("/budget-categories", payload);
-  return response.data;
+  const { data } = await apiClient.post<BudgetCategory>(
+    "/budget-categories",
+    payload
+  );
+
+  return data;
 };
 
 export const deleteBudgetCategory = async (id: string): Promise<void> => {
-  await axios.delete(`/budget-categories/${id}`);
+  await apiClient.delete(`/budget-categories/${id}`);
 };

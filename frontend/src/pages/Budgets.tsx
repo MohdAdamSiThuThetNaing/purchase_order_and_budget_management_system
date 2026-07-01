@@ -11,6 +11,7 @@ import type { Project } from "../types/project";
 const Budgets = () => {
   const [budgets, setBudgets] = useState<Budget[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [error, setError] = useState("");
 
   const [form, setForm] = useState<CreateBudgetRequest>({
     projectId: "",
@@ -22,10 +23,12 @@ const Budgets = () => {
 
   const loadBudgets = async () => {
     try {
+      setError("");
+
       const data = await getBudgets();
       setBudgets(data);
-    } catch (error) {
-      console.error("Failed to load budgets:", error);
+    } catch (err: any) {
+      setError(err.response?.data?.message ?? "Failed to load budgets.");
     }
   };
 
@@ -40,8 +43,8 @@ const Budgets = () => {
           projectId: data[0].id,
         }));
       }
-    } catch (error) {
-      console.error("Failed to load projects:", error);
+    } catch (err: any) {
+      setError(err.response?.data?.message ?? "Failed to load projects.");
     }
   };
 
@@ -65,7 +68,7 @@ const Budgets = () => {
     }
 
     try {
-      console.log("Create Budget:", form);
+      setError("");
 
       await createBudget(form);
 
@@ -78,17 +81,46 @@ const Budgets = () => {
       }));
 
       await loadBudgets();
-    } catch (error) {
-      console.error("Failed to create budget:", error);
+    } catch (err: any) {
+      if (err.response?.status === 403) {
+        alert("You do not have permission to create budgets.");
+        setError("You do not have permission to create budgets.");
+      } else {
+        const message =
+          err.response?.data?.message ?? "Failed to create budget.";
+
+        alert(message);
+        setError(message);
+      }
     }
   };
 
   const handleDelete = async (id: string) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this budget?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
     try {
+      setError("");
+
       await deleteBudget(id);
+
       await loadBudgets();
-    } catch (error) {
-      console.error("Failed to delete budget:", error);
+    } catch (err: any) {
+      if (err.response?.status === 403) {
+        alert("You do not have permission to delete this budget.");
+        setError("You do not have permission to delete this budget.");
+      } else {
+        const message =
+          err.response?.data?.message ?? "Failed to delete budget.";
+
+        alert(message);
+        setError(message);
+      }
     }
   };
 
@@ -184,6 +216,8 @@ const Budgets = () => {
       </div>
 
       <div className="budget-card">
+        {error && <div className="budget-error">{error}</div>}
+
         <BudgetTable budgets={budgets} onDelete={handleDelete} />
       </div>
     </div>
