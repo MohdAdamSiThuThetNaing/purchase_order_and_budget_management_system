@@ -1,6 +1,7 @@
 package com.company.purchaseorder.budget
 
 import com.company.purchaseorder.auth.controller.AuthenticatedUser
+import com.company.purchaseorder.auth.repository.UserRepository
 import com.company.purchaseorder.organization.OrganizationRepository
 import com.company.purchaseorder.project.ProjectRepository
 import org.springframework.security.core.context.SecurityContextHolder
@@ -12,7 +13,8 @@ class BudgetService(
 
     private val budgetRepository: BudgetRepository,
     private val organizationRepository: OrganizationRepository,
-    private val projectRepository: ProjectRepository
+    private val projectRepository: ProjectRepository,
+    private val userRepository: UserRepository
 
 ) {
 
@@ -43,18 +45,8 @@ class BudgetService(
         request: CreateBudgetRequest
     ): BudgetResponse {
 
-        val organizationId = getOrganizationId()
-
-        if (
-            budgetRepository.existsByNameAndProject_Id(
-                request.name,
-                request.projectId
-            )
-        ) {
-            throw IllegalArgumentException(
-                "Budget already exists."
-            )
-        }
+        val authenticatedUser = getAuthenticatedUser()
+        val organizationId = authenticatedUser.organizationId
 
         val organization =
             organizationRepository.findById(organizationId)
@@ -68,13 +60,31 @@ class BudgetService(
                     RuntimeException("Project not found.")
                 }
 
+        val createdBy =
+            userRepository.findById(authenticatedUser.id)
+                .orElseThrow {
+                    RuntimeException("User not found.")
+                }
+
+        if (
+            budgetRepository.existsByNameAndProject_Id(
+                request.name,
+                request.projectId
+            )
+        ) {
+            throw IllegalArgumentException(
+                "Budget already exists."
+            )
+        }
+
         val budget = Budget(
             organization = organization,
             project = project,
+            createdBy = createdBy,
             name = request.name,
             amount = request.amount,
             description = request.description,
-            active = true
+            active = request.active
         )
 
         val saved = budgetRepository.save(budget)
@@ -133,9 +143,7 @@ class BudgetService(
         return toResponse(updated)
     }
 
-    fun deleteBudget(
-        id: UUID
-    ) {
+    fun deleteBudget(id: UUID) {
 
         val organizationId = getOrganizationId()
 
@@ -158,6 +166,7 @@ class BudgetService(
             id = budget.id!!,
             organizationId = budget.organization.id!!,
             projectId = budget.project.id!!,
+            projectName = budget.project.name,
             name = budget.name,
             amount = budget.amount,
             description = budget.description,

@@ -7,6 +7,7 @@ data class BudgetResponse(
     val id: UUID,
     val organizationId: UUID,
     val projectId: UUID,
+    val projectName: String,
     val name: String,
     val amount: BigDecimal,
     val description: String?,

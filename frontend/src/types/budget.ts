@@ -1,23 +1,31 @@
 export interface Budget {
   id: string;
 
+  organizationId: string;
+
+  projectId: string;
+
+  projectName: string;
+
   name: string;
 
   amount: number;
 
-  fiscalYear: number;
+  description?: string;
 
-  createdAt?: string;
-
-  updatedAt?: string;
+  active: boolean;
 }
 
 export interface CreateBudgetRequest {
+  projectId: string;
+
   name: string;
 
   amount: number;
 
-  fiscalYear: number;
+  description?: string;
+
+  active: boolean;
 }
 
 export interface UpdateBudgetRequest {
@@ -25,5 +33,7 @@ export interface UpdateBudgetRequest {
 
   amount: number;
 
-  fiscalYear: number;
+  description?: string;
+
+  active: boolean;
 }

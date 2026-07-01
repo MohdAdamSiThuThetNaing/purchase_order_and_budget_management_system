@@ -1,5 +1,6 @@
 package com.company.purchaseorder.budget
 
+import com.company.purchaseorder.auth.entity.User
 import com.company.purchaseorder.organization.Organization
 import com.company.purchaseorder.project.Project
 import jakarta.persistence.*
@@ -29,10 +30,16 @@ class Budget(
     )
     var project: Project,
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+        name = "created_by",
+        nullable = false
+    )
+    var createdBy: User,
+
     @Column(nullable = false)
     var name: String,
 
-    
     @Column(
         name = "total_budget",
         nullable = false,

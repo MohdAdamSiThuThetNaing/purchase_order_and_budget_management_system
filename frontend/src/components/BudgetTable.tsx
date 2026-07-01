@@ -19,22 +19,21 @@ const BudgetTable = ({ budgets, onDelete }: BudgetTableProps) => {
     >
       <thead>
         <tr>
-          <th style={thStyle}>Name</th>
+          <th style={thStyle}>Project</th>
+          <th style={thStyle}>Budget</th>
           <th style={thStyle}>Amount</th>
-          <th style={thStyle}>Fiscal Year</th>
-          <th style={thStyle}>Actions</th>
+          <th style={thStyle}>Status</th>
+          <th style={thStyle}>Action</th>
         </tr>
       </thead>
 
       <tbody>
         {budgets.map((budget) => (
           <tr key={budget.id}>
+            <td style={tdStyle}>{budget.projectName}</td>
             <td style={tdStyle}>{budget.name}</td>
-
-            <td style={tdStyle}>{budget.amount.toLocaleString()}</td>
-
-            <td style={tdStyle}>{budget.fiscalYear}</td>
-
+            <td style={tdStyle}>{budget.amount}</td>
+            <td style={tdStyle}>{budget.active ? "Active" : "Inactive"}</td>
             <td style={tdStyle}>
               <button
                 style={deleteButtonStyle}
