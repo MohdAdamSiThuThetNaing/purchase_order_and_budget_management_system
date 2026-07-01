@@ -9,11 +9,23 @@ import {
 } from "../api/budgetLineApi";
 
 import type { BudgetLine, CreateBudgetLineRequest } from "../types/budgetLine";
+import type { Project } from "../types/project";
+import type { Budget } from "../types/budget";
+import type { BudgetCategory } from "../types/budgetCategory";
+
+import { getProjects } from "../api/projectApi";
+import { getBudgets } from "../api/budgetApi";
+import { getBudgetCategories } from "../api/budgetCategoryApi";
 
 import "../layouts/BudgetLine.css";
 
 const BudgetLines = () => {
   const [budgetLines, setBudgetLines] = useState<BudgetLine[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [budgets, setBudgets] = useState<Budget[]>([]);
+  const [categories, setCategories] = useState<BudgetCategory[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const [form, setForm] = useState<CreateBudgetLineRequest>({
     projectId: "",
@@ -33,17 +45,58 @@ const BudgetLines = () => {
     }
   };
 
+  const loadLookups = async () => {
+    try {
+      setError("");
+      const [projectData, budgetData, categoryData] = await Promise.all([
+        getProjects(),
+        getBudgets(),
+        getBudgetCategories(),
+      ]);
+
+      setProjects(projectData);
+      setBudgets(budgetData);
+      setCategories(categoryData);
+
+      // pick sensible defaults
+      if (projectData.length > 0 && !form.projectId) {
+        const projectId = projectData[0].id;
+        const firstBudget = budgetData.find((b) => b.projectId === projectId);
+        const budgetId = firstBudget?.id ?? "";
+        const firstCategory = categoryData.find((c) => c.budgetId === budgetId);
+        const categoryId = firstCategory?.id ?? "";
+
+        setForm((prev) => ({
+          ...prev,
+          projectId,
+          budgetId,
+          categoryId,
+        }));
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.message ?? "Failed to load dropdown data.");
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
-      await loadBudgetLines();
+      try {
+        setLoading(true);
+        await Promise.all([loadBudgetLines(), loadLookups()]);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCreate = async () => {
-    if (!form.name.trim() || !form.projectId || !form.budgetId || !form.categoryId)
-      return;
+    if (!form.projectId) return alert("Please select a project.");
+    if (!form.budgetId) return alert("Please select a budget.");
+    if (!form.categoryId) return alert("Please select a category.");
+    if (!form.name.trim()) return alert("Please enter a budget line name.");
 
     try {
       await createBudgetLine(form);
@@ -72,6 +125,16 @@ const BudgetLines = () => {
     }
   };
 
+  const filteredBudgets = budgets.filter(
+    (budget) => !form.projectId || budget.projectId === form.projectId
+  );
+
+  const filteredCategories = categories.filter(
+    (category) =>
+      (!form.projectId || category.projectId === form.projectId) &&
+      (!form.budgetId || category.budgetId === form.budgetId)
+  );
+
   return (
     <div className="budget-line-page">
       <div className="budget-line-header">
@@ -81,41 +144,77 @@ const BudgetLines = () => {
 
       <div className="budget-line-card">
         <div className="budget-line-toolbar">
-          <input
+          <select
             className="budget-line-input"
-            placeholder="Project ID"
             value={form.projectId}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                projectId: e.target.value,
-              })
-            }
-          />
+            onChange={(e) => {
+              const projectId = e.target.value;
+              const nextBudget = budgets.find((b) => b.projectId === projectId);
+              const budgetId = nextBudget?.id ?? "";
+              const nextCategory = categories.find((c) => c.budgetId === budgetId);
+              const categoryId = nextCategory?.id ?? "";
 
-          <input
+              setForm((prev) => ({
+                ...prev,
+                projectId,
+                budgetId,
+                categoryId,
+              }));
+            }}
+            disabled={loading}
+          >
+            <option value="">Select Project</option>
+            {projects.map((project) => (
+              <option key={project.id} value={project.id}>
+                {project.name}
+              </option>
+            ))}
+          </select>
+
+          <select
             className="budget-line-input"
-            placeholder="Budget ID"
             value={form.budgetId}
-            onChange={(e) =>
-              setForm({
-                ...form,
-                budgetId: e.target.value,
-              })
-            }
-          />
+            onChange={(e) => {
+              const budgetId = e.target.value;
+              const budget = budgets.find((b) => b.id === budgetId);
+              const projectId = budget?.projectId ?? form.projectId;
+              const nextCategory = categories.find((c) => c.budgetId === budgetId);
 
-          <input
+              setForm((prev) => ({
+                ...prev,
+                projectId,
+                budgetId,
+                categoryId: nextCategory?.id ?? "",
+              }));
+            }}
+            disabled={loading || !form.projectId}
+          >
+            <option value="">Select Budget</option>
+            {filteredBudgets.map((budget) => (
+              <option key={budget.id} value={budget.id}>
+                {budget.name}
+              </option>
+            ))}
+          </select>
+
+          <select
             className="budget-line-input"
-            placeholder="Category ID"
             value={form.categoryId}
             onChange={(e) =>
-              setForm({
-                ...form,
+              setForm((prev) => ({
+                ...prev,
                 categoryId: e.target.value,
-              })
+              }))
             }
-          />
+            disabled={loading || !form.budgetId}
+          >
+            <option value="">Select Category</option>
+            {filteredCategories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
 
           <input
             className="budget-line-input"
@@ -161,6 +260,9 @@ const BudgetLines = () => {
       </div>
 
       <div className="budget-line-card">
+        {error && (
+          <div style={{ marginBottom: 12, color: "#dc2626" }}>{error}</div>
+        )}
         <BudgetLineTable budgetLines={budgetLines} onDelete={handleDelete} />
       </div>
     </div>
