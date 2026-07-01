@@ -64,6 +64,10 @@ Seeded automatically via Flyway migration `9_seed_sample_data.sql`. Replace the 
 | Finance  | finance@acme.test  |
 | Employee | employee@acme.test |
 
+## 🧩 ER Diagram
+
+![ER Diagram](./erd.png)
+
 ## Architecture Overview
 
 ```
